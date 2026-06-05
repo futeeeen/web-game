@@ -77,21 +77,48 @@ function normalizeRect(a, b) {
   return { x: x1, y: y1, w: x2 - x1 + 1, h: y2 - y1 + 1 };
 }
 
+function validSplits(rect, vertical) {
+  const limit = vertical ? rect.w : rect.h;
+  const span = vertical ? rect.h : rect.w;
+  const splits = [];
+  for (let splitAt = 1; splitAt < limit; splitAt += 1) {
+    if (splitAt * span > 1 && (limit - splitAt) * span > 1) {
+      splits.push(splitAt);
+    }
+  }
+  return splits;
+}
+
 function makePuzzle() {
   const targetPieces = randomInt(5, 12);
   const pieces = [{ x: 0, y: 0, w: SIZE, h: SIZE }];
 
   while (pieces.length < targetPieces) {
     const candidates = pieces
-      .map((rect, i) => ({ rect, i }))
-      .filter(({ rect }) => area(rect) >= 4 && (rect.w > 1 || rect.h > 1))
+      .map((rect, i) => ({
+        rect,
+        i,
+        verticalSplits: validSplits(rect, true),
+        horizontalSplits: validSplits(rect, false),
+      }))
+      .filter(({ verticalSplits, horizontalSplits }) => verticalSplits.length || horizontalSplits.length)
       .sort((a, b) => area(b.rect) - area(a.rect));
 
     if (!candidates.length) break;
 
-    const { rect, i } = candidates[randomInt(0, Math.min(8, candidates.length - 1))];
-    const splitVertical = rect.w > 1 && (rect.h === 1 || rect.w >= rect.h || Math.random() > 0.5);
-    const splitAt = splitVertical ? randomInt(1, rect.w - 1) : randomInt(1, rect.h - 1);
+    const { rect, i, verticalSplits, horizontalSplits } =
+      candidates[randomInt(0, Math.min(8, candidates.length - 1))];
+    const orientations = [];
+    if (verticalSplits.length) orientations.push("vertical");
+    if (horizontalSplits.length) orientations.push("horizontal");
+    const preferred = rect.w >= rect.h ? "vertical" : "horizontal";
+    const splitVertical =
+      orientations.includes(preferred) && (orientations.length === 1 || Math.random() < 0.62)
+        ? preferred === "vertical"
+        : orientations[randomInt(0, orientations.length - 1)] === "vertical";
+    const splitAt = splitVertical
+      ? verticalSplits[randomInt(0, verticalSplits.length - 1)]
+      : horizontalSplits[randomInt(0, horizontalSplits.length - 1)];
     const first = splitVertical
       ? { x: rect.x, y: rect.y, w: splitAt, h: rect.h }
       : { x: rect.x, y: rect.y, w: rect.w, h: splitAt };
@@ -159,8 +186,9 @@ function render() {
     cell.textContent = "";
 
     if (playerId) {
+      const playerRect = playerRects.get(playerId);
       filled += 1;
-      cell.style.setProperty("--fill", palette[playerId % palette.length]);
+      cell.style.setProperty("--fill", playerRect?.color ?? palette[0]);
     }
 
     if (clue) {
@@ -225,8 +253,19 @@ function clearPlayerRect(playerId, save = true) {
   render();
 }
 
+function nextColor() {
+  const used = new Set([...playerRects.values()].map((rect) => rect.color));
+  return palette.find((color) => !used.has(color)) ?? palette[playerRects.size % palette.length];
+}
+
 function placeRect(rect) {
   const selected = rectCells(rect);
+  if (selected.length === 1) {
+    setStatus("矩形面積至少要是 2，不能只框選 1 格。", "warn");
+    markRect(rect, "bad");
+    return;
+  }
+
   const occupied = selected.find((idx) => playerCells[idx]);
   if (occupied) {
     setStatus("這個範圍碰到已框選色塊，先點擊該色塊清除後再框選。", "bad");
@@ -237,7 +276,7 @@ function placeRect(rect) {
   snapshot();
   const id = nextPlayerId;
   nextPlayerId += 1;
-  playerRects.set(id, { ...rect, cells: selected, area: selected.length });
+  playerRects.set(id, { ...rect, cells: selected, area: selected.length, color: nextColor() });
   for (const idx of selected) playerCells[idx] = id;
   clearBadMarks();
   render();
@@ -301,6 +340,12 @@ function checkBoard() {
   }
 
   for (const [playerId, rect] of playerRects) {
+    if (rect.area === 1) {
+      markRect(rect, "bad");
+      setStatus("有矩形面積只有 1，請改成面積 2 以上。", "bad");
+      return false;
+    }
+
     const clueEntries = rect.cells.filter((idx) => clues.has(idx));
     for (const clueIndex of clueEntries) {
       const clue = clues.get(clueIndex);
