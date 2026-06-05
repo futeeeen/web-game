@@ -26,6 +26,8 @@ const undoBtn = document.querySelector("#undoBtn");
 const clearBtn = document.querySelector("#clearBtn");
 const newBtn = document.querySelector("#newBtn");
 
+const BOARD_LINE_SIZE = 2;
+
 let cells = [];
 let solution = [];
 let clues = new Map();
@@ -168,6 +170,24 @@ function buildBoard() {
     boardEl.append(cell);
     cells.push(cell);
   }
+  updateBoardSize();
+}
+
+function updateBoardSize() {
+  if (typeof window === "undefined" || typeof getComputedStyle === "undefined") return;
+
+  const shell = boardEl.parentElement;
+  if (!shell) return;
+
+  const shellStyle = getComputedStyle(shell);
+  const shellPadding =
+    parseFloat(shellStyle.paddingLeft) +
+    parseFloat(shellStyle.paddingRight);
+  const available = shell.clientWidth - shellPadding;
+  const frame = BOARD_LINE_SIZE * 2 + BOARD_LINE_SIZE * 2 + BOARD_LINE_SIZE * (SIZE - 1);
+  const maxSide = Math.min(available, window.innerHeight * 0.78, 620);
+  const cell = Math.max(24, Math.floor((maxSide - frame) / SIZE));
+  boardEl.style.setProperty("--board-px", `${cell * SIZE + frame}px`);
 }
 
 function setStatus(text, type = "") {
@@ -425,6 +445,7 @@ hintBtn.addEventListener("click", showHint);
 undoBtn.addEventListener("click", restoreLast);
 clearBtn.addEventListener("click", clearBoard);
 newBtn.addEventListener("click", newPuzzle);
+window.addEventListener("resize", updateBoardSize);
 
 buildBoard();
 newPuzzle();

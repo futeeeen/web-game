@@ -143,11 +143,11 @@ h1 {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(var(--board-size, 8), minmax(34px, 1fr));
+  grid-template-columns: repeat(var(--board-size, 8), minmax(0, 1fr));
   grid-template-rows: repeat(var(--board-size, 8), minmax(0, 1fr));
   gap: 2px;
-  width: min(100%, calc(100dvh - 146px), 620px);
-  min-width: 320px;
+  width: var(--board-px, min(100%, 78dvh, 620px));
+  min-width: min(320px, 100%);
   aspect-ratio: 1;
   margin-inline: auto;
   padding: 2px;
@@ -166,6 +166,7 @@ h1 {
   height: 100%;
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
   padding: 0;
   border: 0;
   background: var(--fill, #fffdf5);
@@ -174,25 +175,27 @@ h1 {
   font-weight: 900;
   line-height: 1;
   cursor: crosshair;
+  contain: layout paint size;
 }
 
 .cell.has-clue {
   color: #17202b;
 }
 
-.cell.has-clue::after {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  z-index: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 0 0 1px rgba(38, 49, 60, 0.16);
-}
-
 .cell > span {
   position: relative;
   z-index: 1;
+  display: grid;
+  width: min(72%, 2.35em);
+  max-width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 0 0 1px rgba(38, 49, 60, 0.16);
+  font-size: clamp(0.72rem, 2vw, 1.15rem);
+  line-height: 1;
+  min-width: 0;
 }
 
 .cell.preview {
@@ -307,8 +310,8 @@ h2 {
     min-width: 0;
   }
 
-  .cell {
-    font-size: clamp(0.86rem, 4.6vw, 1.2rem);
+  .cell > span {
+    font-size: clamp(0.72rem, 4.1vw, 1rem);
   }
 
   .panel {
