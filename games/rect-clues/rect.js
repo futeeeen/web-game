@@ -28,7 +28,6 @@ const newBtn = document.querySelector("#newBtn");
 
 let cells = [];
 let solution = [];
-let solutionByCell = [];
 let clues = new Map();
 let playerCells = Array(TOTAL).fill(null);
 let playerRects = new Map();
@@ -79,7 +78,7 @@ function normalizeRect(a, b) {
 }
 
 function makePuzzle() {
-  const targetPieces = randomInt(10, 14);
+  const targetPieces = randomInt(5, 12);
   const pieces = [{ x: 0, y: 0, w: SIZE, h: SIZE }];
 
   while (pieces.length < targetPieces) {
@@ -104,17 +103,19 @@ function makePuzzle() {
   }
 
   solution = pieces.map((rect, id) => ({ ...rect, id, cells: rectCells(rect), area: area(rect) }));
-  solutionByCell = Array(TOTAL);
   clues = new Map();
+  const noClueId = solution.length > 1 && Math.random() < 0.55 ? randomInt(0, solution.length - 1) : -1;
 
   for (const rect of solution) {
+    if (rect.id === noClueId) continue;
+
     const clueCell = shuffle([...rect.cells])[0];
     clues.set(clueCell, { value: rect.area, solutionId: rect.id });
-    solutionByCell[clueCell] = rect.id;
-    for (const idx of rect.cells) solutionByCell[idx] = rect.id;
   }
 
   for (const rect of solution) {
+    if (rect.id === noClueId) continue;
+
     if (rect.area >= 8 && Math.random() < 0.22) {
       const openCells = rect.cells.filter((idx) => !clues.has(idx));
       if (openCells.length) {
@@ -290,10 +291,6 @@ function updatePreview() {
   markRect(normalizeRect(drag.start, drag.current), "preview");
 }
 
-function rectSignature(indices) {
-  return indices.slice().sort((a, b) => a - b).join(",");
-}
-
 function checkBoard() {
   clearBadMarks();
   const empty = playerCells.findIndex((value) => !value);
@@ -305,27 +302,9 @@ function checkBoard() {
 
   for (const [playerId, rect] of playerRects) {
     const clueEntries = rect.cells.filter((idx) => clues.has(idx));
-    if (clueEntries.length === 0) {
-      markRect(rect, "bad");
-      setStatus("每個答案矩形都會有線索；這塊沒有包含任何數字。", "bad");
-      return false;
-    }
-
     for (const clueIndex of clueEntries) {
       const clue = clues.get(clueIndex);
-      const answer = solution[clue.solutionId];
-      const sameArea = rect.area === clue.value;
-      const sameShape = rectSignature(rect.cells) === rectSignature(answer.cells);
-      if (!sameArea || !sameShape) {
-        markRect(rect, "bad");
-        setStatus("有色塊沒有對上該數字背後的正確矩形位置。", "bad");
-        return false;
-      }
-    }
-
-    for (const idx of rect.cells) {
-      const clue = clues.get(idx);
-      if (clue && clue.value !== rect.area) {
+      if (rect.area !== clue.value) {
         markRect(rect, "bad");
         setStatus("有矩形的面積和內部數字不一致。", "bad");
         return false;
@@ -333,7 +312,7 @@ function checkBoard() {
     }
   }
 
-  setStatus("通關！你完整還原了這次的矩形布局。", "good");
+  setStatus("通關！這是一個符合所有數字線索的完整布局。", "good");
   return true;
 }
 
