@@ -131,7 +131,7 @@ function makePuzzle() {
 
   solution = pieces.map((rect, id) => ({ ...rect, id, cells: rectCells(rect), area: area(rect) }));
   clues = new Map();
-  const noClueId = solution.length > 1 && Math.random() < 0.55 ? randomInt(0, solution.length - 1) : -1;
+  const noClueId = solution.length > 1 && Math.random() < 0.28 ? randomInt(0, solution.length - 1) : -1;
 
   for (const rect of solution) {
     if (rect.id === noClueId) continue;
@@ -205,11 +205,31 @@ function render() {
 }
 
 function clearBadMarks() {
-  for (const cell of cells) cell.classList.remove("bad", "hint", "preview");
+  for (const cell of cells) {
+    cell.classList.remove("bad", "hint", "preview");
+    cell.style.removeProperty("--preview-fill");
+    cell.style.removeProperty("--preview-border");
+  }
 }
 
 function markRect(rect, className) {
   for (const idx of rectCells(rect)) cells[idx].classList.add(className);
+}
+
+function markPreview(rect, color) {
+  for (const idx of rectCells(rect)) {
+    cells[idx].classList.add("preview");
+    cells[idx].style.setProperty("--preview-fill", hexToRgba(color, 0.36));
+    cells[idx].style.setProperty("--preview-border", color);
+  }
+}
+
+function hexToRgba(hex, alpha) {
+  const value = hex.replace("#", "");
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function cellFromPoint(clientX, clientY) {
@@ -303,7 +323,7 @@ function beginDrag(event) {
 
   const start = cellFromPoint(event.clientX, event.clientY);
   if (!start) return;
-  drag = { start, current: start };
+  drag = { start, current: start, color: nextColor() };
   boardEl.setPointerCapture(event.pointerId);
   updatePreview();
 }
@@ -327,7 +347,7 @@ function endDrag() {
 function updatePreview() {
   clearBadMarks();
   if (!drag) return;
-  markRect(normalizeRect(drag.start, drag.current), "preview");
+  markPreview(normalizeRect(drag.start, drag.current), drag.color);
 }
 
 function checkBoard() {
