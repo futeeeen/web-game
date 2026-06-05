@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7c85f" />
+    <meta
+      name="description"
+      content="一款適合手機與桌機遊玩的插畫風格網頁小遊戲。"
+    />
+    <title>星芽採集日</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="home-link" href="../../">遊戲目錄</a>
+    <main class="game-shell" aria-label="星芽採集日網頁小遊戲">
+      <section class="stage-wrap">
+        <div class="topbar" aria-live="polite">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <div>
+              <h1>星芽採集日</h1>
+              <p>接住星芽，避開雨滴</p>
+            </div>
+          </div>
+
+          <div class="stats" aria-label="遊戲狀態">
+            <span><strong id="score">0</strong> 分</span>
+            <span><strong id="lives">3</strong> 心</span>
+            <span><strong id="best">0</strong> 最高</span>
+          </div>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="game" width="900" height="1300" aria-label="遊戲畫面"></canvas>
+
+          <div class="overlay is-visible" id="startOverlay">
+            <div class="overlay-panel">
+              <h2>準備採集星芽</h2>
+              <p>左右移動小籃子，接住發光星芽。紫色雨滴會扣心，金色花瓣會加速得分。</p>
+              <button id="startBtn" class="primary-btn" type="button">開始遊戲</button>
+            </div>
+          </div>
+
+          <div class="overlay" id="gameOverOverlay">
+            <div class="overlay-panel">
+              <h2>今日收成</h2>
+              <p id="finalScore">你採到了 0 分的星芽。</p>
+              <button id="restartBtn" class="primary-btn" type="button">再玩一次</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls" aria-label="手機操作按鈕">
+          <button id="leftBtn" class="control-btn" type="button" aria-label="向左移動">←</button>
+          <button id="pauseBtn" class="control-btn pause" type="button" aria-label="暫停或繼續">Ⅱ</button>
+          <button id="rightBtn" class="control-btn" type="button" aria-label="向右移動">→</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

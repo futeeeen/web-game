@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f0c767" />
+    <meta
+      name="description"
+      content="26x26 的矩形面積推理遊戲，透過數字線索框選所有隱藏矩形。"
+    />
+    <title>矩形線索盤</title>
+    <link rel="stylesheet" href="./rect.css" />
+  </head>
+  <body>
+    <main class="app" aria-label="矩形線索盤">
+      <header class="mast">
+        <a class="home-link" href="../../">目錄</a>
+        <div>
+          <p class="eyebrow">26 x 26 Logic Board</p>
+          <h1>矩形線索盤</h1>
+        </div>
+        <div class="metrics" aria-live="polite">
+          <span><strong id="filledCount">0</strong>/676</span>
+          <span><strong id="pieceCount">0</strong> 塊</span>
+          <span><strong id="clueCount">0</strong> 線索</span>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="board-shell">
+          <div id="board" class="board" aria-label="26乘26框選底盤"></div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-section">
+            <h2>規則</h2>
+            <p>每個數字代表該格所在答案矩形的面積。拖曳框選 1x1 以上矩形，把 26x26 底盤完整切成不同色塊。</p>
+          </div>
+
+          <div class="panel-section status-box">
+            <h2>判定</h2>
+            <p id="status">拖曳空白格開始框選；點擊已框選色塊可清除該矩形。</p>
+          </div>
+
+          <div class="actions">
+            <button id="checkBtn" type="button">檢查</button>
+            <button id="hintBtn" type="button">提示</button>
+            <button id="undoBtn" type="button">復原</button>
+            <button id="clearBtn" type="button">清盤</button>
+            <button id="newBtn" type="button">新題目</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="./rect.js"></script>
+  </body>
+</html>
