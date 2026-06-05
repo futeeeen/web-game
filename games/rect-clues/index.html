@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f0c767" />
     <meta
       name="description"
-      content="26x26 的矩形面積推理遊戲，透過數字線索框選所有隱藏矩形。"
+      content="8x8 的矩形面積推理遊戲，透過數字線索框選所有隱藏矩形。"
     />
     <title>矩形線索盤</title>
     <link rel="stylesheet" href="./rect.css" />
@@ -16,11 +16,11 @@
       <header class="mast">
         <a class="home-link" href="../../">目錄</a>
         <div>
-          <p class="eyebrow">26 x 26 Logic Board</p>
+          <p class="eyebrow">8 x 8 Logic Board</p>
           <h1>矩形線索盤</h1>
         </div>
         <div class="metrics" aria-live="polite">
-          <span><strong id="filledCount">0</strong>/676</span>
+          <span><strong id="filledCount">0</strong>/64</span>
           <span><strong id="pieceCount">0</strong> 塊</span>
           <span><strong id="clueCount">0</strong> 線索</span>
         </div>
@@ -28,13 +28,13 @@
 
       <section class="workspace">
         <div class="board-shell">
-          <div id="board" class="board" aria-label="26乘26框選底盤"></div>
+          <div id="board" class="board" aria-label="8乘8框選底盤"></div>
         </div>
 
         <aside class="panel">
           <div class="panel-section">
             <h2>規則</h2>
-            <p>每個數字代表該格所在答案矩形的面積。拖曳框選 1x1 以上矩形，把 26x26 底盤完整切成不同色塊。</p>
+            <p>每個數字代表該格所在答案矩形的面積。拖曳框選 1x1 以上矩形，把 8x8 底盤完整切成不同色塊。</p>
           </div>
 
           <div class="panel-section status-box">

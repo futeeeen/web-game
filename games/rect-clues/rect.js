@@ -1,4 +1,4 @@
-const SIZE = 26;
+const SIZE = 8;
 const TOTAL = SIZE * SIZE;
 const palette = [
   "#f5d66d",
@@ -79,13 +79,13 @@ function normalizeRect(a, b) {
 }
 
 function makePuzzle() {
-  const targetPieces = randomInt(72, 88);
+  const targetPieces = randomInt(10, 14);
   const pieces = [{ x: 0, y: 0, w: SIZE, h: SIZE }];
 
   while (pieces.length < targetPieces) {
     const candidates = pieces
       .map((rect, i) => ({ rect, i }))
-      .filter(({ rect }) => area(rect) >= 8 && (rect.w > 1 || rect.h > 1))
+      .filter(({ rect }) => area(rect) >= 4 && (rect.w > 1 || rect.h > 1))
       .sort((a, b) => area(b.rect) - area(a.rect));
 
     if (!candidates.length) break;
@@ -115,7 +115,7 @@ function makePuzzle() {
   }
 
   for (const rect of solution) {
-    if (rect.area >= 18 && Math.random() < 0.18) {
+    if (rect.area >= 8 && Math.random() < 0.22) {
       const openCells = rect.cells.filter((idx) => !clues.has(idx));
       if (openCells.length) {
         clues.set(shuffle(openCells)[0], { value: rect.area, solutionId: rect.id });
@@ -126,6 +126,7 @@ function makePuzzle() {
 
 function buildBoard() {
   boardEl.textContent = "";
+  boardEl.style.setProperty("--board-size", SIZE);
   cells = [];
   for (let idx = 0; idx < TOTAL; idx += 1) {
     const cell = document.createElement("button");

@@ -143,9 +143,9 @@ h1 {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(26, minmax(14px, 1fr));
-  width: min(100%, calc(100dvh - 146px), 840px);
-  min-width: 364px;
+  grid-template-columns: repeat(var(--board-size, 8), minmax(34px, 1fr));
+  width: min(100%, calc(100dvh - 146px), 620px);
+  min-width: 320px;
   aspect-ratio: 1;
   margin-inline: auto;
   border: 2px solid var(--strong-line);
@@ -164,17 +164,17 @@ h1 {
   border-bottom: 1px solid var(--line);
   background: var(--fill, #fffdf5);
   color: #1f2730;
-  font-size: clamp(0.42rem, 1.6vw, 0.72rem);
+  font-size: clamp(0.82rem, 2.3vw, 1.35rem);
   font-weight: 900;
   line-height: 1;
   cursor: crosshair;
 }
 
-.cell:nth-child(26n) {
+.cell:nth-child(8n) {
   border-right: 0;
 }
 
-.cell:nth-last-child(-n + 26) {
+.cell:nth-last-child(-n + 8) {
   border-bottom: 0;
 }
 
@@ -304,13 +304,13 @@ h2 {
   }
 
   .board {
-    grid-template-columns: repeat(26, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--board-size, 8), minmax(0, 1fr));
     width: 100%;
     min-width: 0;
   }
 
   .cell {
-    font-size: clamp(0.34rem, 1.7vw, 0.52rem);
+    font-size: clamp(0.86rem, 4.6vw, 1.2rem);
   }
 
   .panel {
