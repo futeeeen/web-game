@@ -27,7 +27,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -87,13 +88,14 @@ h1 {
 
 .status-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px auto;
+  grid-template-columns: minmax(0, 1fr) 190px 150px auto;
   gap: 12px;
   align-items: stretch;
   padding: 14px;
 }
 
 .prompt-card,
+.theme-card,
 .timer-card {
   display: grid;
   gap: 4px;
@@ -116,6 +118,18 @@ h1 {
 .timer-card strong {
   align-self: end;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.theme-card select {
+  align-self: end;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffefa;
+  color: var(--ink);
+  font-weight: 900;
 }
 
 .prompt-card.hidden-answer strong {
@@ -207,19 +221,16 @@ canvas {
   cursor: crosshair;
 }
 
-.lock-overlay {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  gap: 8px;
-  background: rgba(41, 49, 61, 0.72);
+.phase-message {
+  grid-column: 2;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(54, 45, 30, 0.16);
+  border-radius: 8px;
+  background: #29313d;
   color: #fff8ea;
+  font-weight: 900;
   text-align: center;
-}
-
-.lock-overlay strong {
-  font-size: clamp(2rem, 7vw, 4rem);
 }
 
 .hidden {
@@ -271,5 +282,9 @@ canvas {
   .canvas-wrap,
   canvas {
     min-height: 360px;
+  }
+
+  .phase-message {
+    grid-column: 1;
   }
 }

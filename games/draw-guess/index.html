@@ -23,6 +23,13 @@
           <span class="label">題目</span>
           <strong id="promptText">按開始後出題</strong>
         </div>
+        <div class="theme-card">
+          <label class="label" for="themeSelect">題目主題</label>
+          <select id="themeSelect">
+            <option value="general">一般題庫</option>
+            <option value="chiikawa">吉伊卡哇</option>
+          </select>
+        </div>
         <div class="timer-card">
           <span class="label">倒數</span>
           <strong><span id="timerText">15</span>s</strong>
@@ -46,11 +53,8 @@
 
         <div class="canvas-wrap">
           <canvas id="drawCanvas" width="960" height="620" aria-label="繪圖畫布"></canvas>
-          <div id="lockOverlay" class="lock-overlay hidden">
-            <strong>時間到</strong>
-            <span>請交給猜題者輸入答案</span>
-          </div>
         </div>
+        <p id="phaseMessage" class="phase-message hidden">時間到，請交給猜題者輸入答案。</p>
       </section>
 
       <section class="guess-panel">
