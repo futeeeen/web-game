@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   color-scheme: light;
   --ink: #29313d;
   --muted: #687283;
@@ -168,4 +168,13 @@ h1 {
   .card-action {
     grid-column: 1 / -1;
   }
+}
+
+
+.draw .card-art {
+  background:
+    radial-gradient(circle at 30% 32%, #29313d 0 6%, transparent 7%),
+    radial-gradient(circle at 60% 54%, #d77a84 0 7%, transparent 8%),
+    linear-gradient(135deg, transparent 0 45%, rgba(41, 49, 61, 0.85) 46% 50%, transparent 51% 100%),
+    linear-gradient(180deg, #fff8ea 0 68%, #f2c45f 69% 100%);
 }

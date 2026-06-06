@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f2c45f" />
+    <meta name="description" content="你畫我猜：15 秒限時畫圖，時間到後由另一位玩家猜答案。" />
+    <title>你畫我猜 | Web Game Collection</title>
+    <link rel="stylesheet" href="./draw.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <a class="back-link" href="../../">返回遊戲列表</a>
+        <div>
+          <p class="eyebrow">Draw & Guess</p>
+          <h1>你畫我猜</h1>
+        </div>
+      </header>
+
+      <section class="status-panel" aria-live="polite">
+        <div class="prompt-card">
+          <span class="label">題目</span>
+          <strong id="promptText">按開始後出題</strong>
+        </div>
+        <div class="timer-card">
+          <span class="label">倒數</span>
+          <strong><span id="timerText">15</span>s</strong>
+        </div>
+        <button id="startBtn" class="primary-btn" type="button">開始</button>
+      </section>
+
+      <section class="play-area">
+        <aside class="tool-panel" aria-label="繪圖工具">
+          <div class="tool-group">
+            <label for="colorPicker">顏色</label>
+            <input id="colorPicker" type="color" value="#29313d" />
+          </div>
+          <div class="tool-group">
+            <label for="brushSize">筆刷大小</label>
+            <input id="brushSize" type="range" min="2" max="28" value="8" />
+          </div>
+          <button id="clearBtn" class="secondary-btn" type="button">清除畫布</button>
+          <p id="drawHint" class="hint">畫圖者有 15 秒，時間到後題目會被遮住且不能繼續作畫。</p>
+        </aside>
+
+        <div class="canvas-wrap">
+          <canvas id="drawCanvas" width="960" height="620" aria-label="繪圖畫布"></canvas>
+          <div id="lockOverlay" class="lock-overlay hidden">
+            <strong>時間到</strong>
+            <span>請交給猜題者輸入答案</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="guess-panel">
+        <label for="guessInput">猜答案</label>
+        <div class="guess-row">
+          <input id="guessInput" type="text" placeholder="時間到後才能輸入" disabled />
+          <button id="submitBtn" class="primary-btn" type="button" disabled>送出</button>
+        </div>
+        <p id="resultText" class="result" role="status"></p>
+      </section>
+    </main>
+    <script src="./draw.js"></script>
+  </body>
+</html>
