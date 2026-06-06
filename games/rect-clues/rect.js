@@ -16,7 +16,7 @@ const palette = [
 ];
 
 const boardEl = document.querySelector("#board");
-const filledCountEl = document.querySelector("#filledCount");
+const remainingCountEl = document.querySelector("#remainingCount");
 const pieceCountEl = document.querySelector("#pieceCount");
 const clueCountEl = document.querySelector("#clueCount");
 const statusEl = document.querySelector("#status");
@@ -35,6 +35,7 @@ let playerCells = Array(TOTAL).fill(null);
 let playerRects = new Map();
 let history = [];
 let nextPlayerId = 1;
+let pieceLimit = 0;
 let drag = null;
 
 function indexOf(x, y) {
@@ -219,7 +220,7 @@ function render() {
     }
   }
 
-  filledCountEl.textContent = filled;
+  remainingCountEl.textContent = Math.max(0, pieceLimit - playerRects.size);
   pieceCountEl.textContent = playerRects.size;
   clueCountEl.textContent = clues.size;
 }
@@ -265,6 +266,7 @@ function snapshot() {
     playerCells: [...playerCells],
     playerRects: new Map(playerRects),
     nextPlayerId,
+    pieceLimit,
   });
   if (history.length > 50) history.shift();
 }
@@ -278,6 +280,7 @@ function restoreLast() {
   playerCells = last.playerCells;
   playerRects = last.playerRects;
   nextPlayerId = last.nextPlayerId;
+  pieceLimit = last.pieceLimit;
   clearBadMarks();
   render();
   setStatus("已復原上一個框選。");
@@ -299,6 +302,11 @@ function nextColor() {
 }
 
 function placeRect(rect) {
+  if (playerRects.size >= pieceLimit) {
+    setStatus("可用矩形已用完，請先清除或復原一塊矩形後再框選。", "warn");
+    return;
+  }
+
   const selected = rectCells(rect);
   if (selected.length === 1) {
     setStatus("矩形面積至少要是 2，不能只框選 1 格。", "warn");
@@ -341,6 +349,11 @@ function beginDrag(event) {
     return;
   }
 
+  if (playerRects.size >= pieceLimit) {
+    setStatus("可用矩形已用完，請先清除或復原一塊矩形後再框選。", "warn");
+    return;
+  }
+
   const start = cellFromPoint(event.clientX, event.clientY);
   if (!start) return;
   drag = { start, current: start, color: nextColor() };
@@ -372,6 +385,11 @@ function updatePreview() {
 
 function checkBoard() {
   clearBadMarks();
+  if (playerRects.size > pieceLimit) {
+    setStatus(`使用矩形超過上限，這題最多只能使用 ${pieceLimit} 個矩形。`, "bad");
+    return false;
+  }
+
   const empty = playerCells.findIndex((value) => !value);
   if (empty !== -1) {
     cells[empty].classList.add("bad");
@@ -418,18 +436,19 @@ function clearBoard() {
   playerRects.clear();
   clearBadMarks();
   render();
-  setStatus("已清除所有玩家框選。");
+  setStatus(`已清除所有玩家框選，可用矩形恢復為 ${pieceLimit} 個。`);
 }
 
 function newPuzzle() {
   makePuzzle();
+  pieceLimit = solution.length;
   playerCells = Array(TOTAL).fill(null);
   playerRects = new Map();
   history = [];
   nextPlayerId = 1;
   clearBadMarks();
   render();
-  setStatus("新題目已產生。拖曳空白格開始框選。");
+  setStatus(`新題目已產生。你最多可以使用 ${pieceLimit} 個矩形。`);
 }
 
 boardEl.addEventListener("pointerdown", beginDrag);
@@ -445,7 +464,9 @@ hintBtn.addEventListener("click", showHint);
 undoBtn.addEventListener("click", restoreLast);
 clearBtn.addEventListener("click", clearBoard);
 newBtn.addEventListener("click", newPuzzle);
-window.addEventListener("resize", updateBoardSize);
+if (typeof window !== "undefined") {
+  window.addEventListener("resize", updateBoardSize);
+}
 
 buildBoard();
 newPuzzle();
