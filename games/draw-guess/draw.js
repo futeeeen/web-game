@@ -13,6 +13,19 @@
   '微笑', '哭泣', '生氣', '睡覺', '跳舞', '唱歌', '跑步', '游泳', '釣魚', '露營'
 ];
 
+const chiikawaRarePrompts = [
+  { answer: '勞動盔甲先生', aliases: ['勞動鎧甲先生', '工作鎧甲', '勞動鎧甲', '労働の鎧さん'] },
+  { answer: '手拿包盔甲先生', aliases: ['手拿包鎧甲先生', '手拿包盔甲', '手拿包鎧甲', 'ポシェットの鎧さん'] },
+  { answer: '拉麵盔甲先生', aliases: ['拉麵鎧甲先生', '拉麵鎧甲', '拉麵盔甲', '郎鎧甲', 'ラーメンの鎧さん'] },
+  { answer: '偉大盔甲先生', aliases: ['偉大鎧甲先生', '偉大的盔甲先生', '偉い鎧さん'] },
+  { answer: '草盔甲先生', aliases: ['草鎧甲先生', '割草盔甲', '草の鎧さん'] },
+  { answer: '章魚燒盔甲先生', aliases: ['章魚燒鎧甲先生', '章魚燒盔甲', 'たこ焼きの鎧さん'] },
+  { answer: '店員盔甲先生', aliases: ['店員鎧甲先生', '店員盔甲', '店員の鎧さん'] },
+  { answer: '刨冰盔甲先生', aliases: ['刨冰鎧甲先生', '刨冰盔甲', 'かき氷の鎧さん'] },
+  { answer: '湯豆腐盔甲先生', aliases: ['湯豆腐鎧甲先生', '湯豆腐盔甲', '湯豆腐の鎧さん'] },
+  { answer: '拉麵山盔甲先生', aliases: ['拉麵山鎧甲先生', '拉麵山盔甲', 'ラーメン山の鎧さん'] }
+];
+
 const promptPools = {
   general: generalPromptNames.map((answer) => ({ answer, aliases: [] })),
   chiikawa: [
@@ -24,16 +37,7 @@ const promptPools = {
     { answer: '栗子饅頭', aliases: ['栗子饅頭前輩', '栗饅頭', '布丁狗前輩', 'くりまんじゅう'] },
     { answer: '風獅', aliases: ['風獅爺', '獅薩', '翼德', 'シーサー'] },
     { answer: '古本屋', aliases: ['古本', '舊書攤', '卡尼', '小螃蟹', '古本屋先生', 'カニ'] },
-    { answer: '勞動盔甲先生', aliases: ['勞動鎧甲先生', '工作鎧甲', '勞動鎧甲', '労働の鎧さん'] },
-    { answer: '手拿包盔甲先生', aliases: ['手拿包鎧甲先生', '手拿包盔甲', '手拿包鎧甲', 'ポシェットの鎧さん'] },
-    { answer: '拉麵盔甲先生', aliases: ['拉麵鎧甲先生', '拉麵鎧甲', '拉麵盔甲', '郎鎧甲', 'ラーメンの鎧さん'] },
-    { answer: '偉大盔甲先生', aliases: ['偉大鎧甲先生', '偉大的盔甲先生', '偉い鎧さん'] },
-    { answer: '草盔甲先生', aliases: ['草鎧甲先生', '割草盔甲', '草の鎧さん'] },
-    { answer: '章魚燒盔甲先生', aliases: ['章魚燒鎧甲先生', '章魚燒盔甲', 'たこ焼きの鎧さん'] },
-    { answer: '店員盔甲先生', aliases: ['店員鎧甲先生', '店員盔甲', '店員の鎧さん'] },
-    { answer: '刨冰盔甲先生', aliases: ['刨冰鎧甲先生', '刨冰盔甲', 'かき氷の鎧さん'] },
-    { answer: '湯豆腐盔甲先生', aliases: ['湯豆腐鎧甲先生', '湯豆腐盔甲', '湯豆腐の鎧さん'] },
-    { answer: '拉麵山盔甲先生', aliases: ['拉麵山鎧甲先生', '拉麵山盔甲', 'ラーメン山の鎧さん'] },
+    { answer: '盔甲先生', aliases: ['鎧甲先生', '鎧甲人', '盔甲人', '鎧さん'] },
     { answer: '奇美拉', aliases: ['合成獸', 'キメラ'] },
     { answer: '那孩子', aliases: ['那個孩子', 'あのこ'] },
     { answer: '睡衣派對仔', aliases: ['睡衣派對', 'パジャマパーティーズ'] },
@@ -107,7 +111,8 @@ function getCurrentTheme() {
 
 function pickPrompt() {
   const theme = getCurrentTheme();
-  const pool = promptPools[theme];
+  const useRareChiikawaPrompt = theme === 'chiikawa' && Math.random() < 0.15;
+  const pool = useRareChiikawaPrompt ? chiikawaRarePrompts : promptPools[theme];
   let nextPrompt = pool[Math.floor(Math.random() * pool.length)];
 
   while (pool.length > 1 && nextPrompt.answer === previousPromptByTheme[theme]) {

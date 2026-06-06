@@ -19,10 +19,6 @@
       </header>
 
       <section class="status-panel" aria-live="polite">
-        <div class="prompt-card">
-          <span class="label">題目</span>
-          <strong id="promptText">按開始後出題</strong>
-        </div>
         <div class="theme-card">
           <label class="label" for="themeSelect">題目主題</label>
           <select id="themeSelect">
@@ -34,7 +30,13 @@
           <span class="label">倒數</span>
           <strong><span id="timerText">15</span>s</strong>
         </div>
-        <button id="startBtn" class="primary-btn" type="button">開始</button>
+        <div class="start-stack">
+          <div class="prompt-card">
+            <span class="label">題目</span>
+            <strong id="promptText">按開始後出題</strong>
+          </div>
+          <button id="startBtn" class="primary-btn" type="button">開始</button>
+        </div>
       </section>
 
       <section class="play-area">

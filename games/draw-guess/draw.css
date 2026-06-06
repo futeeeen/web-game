@@ -88,10 +88,15 @@ h1 {
 
 .status-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px 150px auto;
+  grid-template-columns: minmax(0, 1fr) 150px minmax(240px, 340px);
   gap: 12px;
-  align-items: stretch;
+  align-items: start;
   padding: 14px;
+}
+
+.start-stack {
+  display: grid;
+  gap: 10px;
 }
 
 .prompt-card,
