@@ -1,5 +1,11 @@
 # 專案推送變更紀錄
 
+## 2026.06.06_12:08:33
+* 修正「矩形線索盤」在手機 Safari 拖曳框選時可能觸發文字選取與拷貝/查詢/翻譯選單的問題。
+* 棋盤、格子與提示標籤加入 `-webkit-touch-callout: none`、`-webkit-user-select: none`、`-webkit-user-drag: none` 與相關不可選取樣式。
+* 拖曳框選事件加入 `preventDefault()`，並攔截棋盤的 `selectstart` 與 `contextmenu`。
+* 驗證：執行 `node --check games/rect-clues/rect.js`；以本機瀏覽器確認拖曳仍可新增矩形、HUD 正常更新且無 console error。
+
 ## 2026.06.06_11:55:25
 * 將「矩形線索盤」HUD 左側由已填格數改為剩餘可用矩形數。
 * 依照每題隱藏答案的矩形數設定玩家可用矩形上限，玩家使用數量不得超過題目矩形數。

@@ -339,6 +339,8 @@ function placeRect(rect) {
 }
 
 function beginDrag(event) {
+  event.preventDefault();
+
   const target = event.target.closest(".cell");
   if (!target) return;
   const startIndex = Number(target.dataset.index);
@@ -363,13 +365,17 @@ function beginDrag(event) {
 
 function moveDrag(event) {
   if (!drag) return;
+  event.preventDefault();
+
   const current = cellFromPoint(event.clientX, event.clientY);
   if (!current) return;
   drag.current = current;
   updatePreview();
 }
 
-function endDrag() {
+function endDrag(event) {
+  event?.preventDefault();
+
   if (!drag) return;
   const rect = normalizeRect(drag.start, drag.current);
   drag = null;
@@ -454,10 +460,13 @@ function newPuzzle() {
 boardEl.addEventListener("pointerdown", beginDrag);
 boardEl.addEventListener("pointermove", moveDrag);
 boardEl.addEventListener("pointerup", endDrag);
-boardEl.addEventListener("pointercancel", () => {
+boardEl.addEventListener("pointercancel", (event) => {
+  event.preventDefault();
   drag = null;
   clearBadMarks();
 });
+boardEl.addEventListener("selectstart", (event) => event.preventDefault());
+boardEl.addEventListener("contextmenu", (event) => event.preventDefault());
 
 checkBtn.addEventListener("click", checkBoard);
 hintBtn.addEventListener("click", showHint);
