@@ -893,19 +893,23 @@ function move(dirName) {
   renderPieces(true);
 
   if (isSolvedState(level, origins)) {
-    window.setTimeout(finishLevel, 190);
+    finishLevel({ rerenderPieces: false });
   } else {
     setStatus(`往${DIRS[dirName].label}滑動，最遠推進 ${result.distance} 格。`);
   }
 }
 
-function finishLevel() {
+function finishLevel({ rerenderPieces = true } = {}) {
   const oldBest = progress.best[levelIndex];
   if (!oldBest || moves < oldBest) progress.best[levelIndex] = moves;
   if (!progress.solved.includes(levelIndex)) progress.solved.push(levelIndex);
   saveProgress();
   renderLevelPicker();
-  renderPieces(false);
+  if (rerenderPieces) {
+    renderPieces(false);
+  } else {
+    bestText.textContent = progress.best[levelIndex] ?? "--";
+  }
 
   nextBtn.disabled = levelIndex >= preparedLevels.length - 1 || !canAccessLevel(levelIndex + 1);
   setStatus(`完成第 ${levelIndex + 1} 關，用了 ${moves} 步。`, "good");

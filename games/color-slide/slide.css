@@ -344,30 +344,95 @@ h2 {
 }
 
 @media (max-width: 620px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 9vw, 2.15rem);
+  }
+
   .mast {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 10px;
+    padding: 10px;
   }
 
   .metrics {
+    grid-column: 1 / -1;
     grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .metrics span {
+    min-height: 34px;
+    padding: 6px;
+    font-size: 0.72rem;
+  }
+
+  .app {
+    width: 100%;
+    gap: 8px;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+
+  .workspace {
+    gap: 8px;
   }
 
   .board-panel {
-    margin-inline: -8px;
+    width: 100%;
+    overflow: hidden;
     padding: 8px;
-    border-left: 0;
-    border-right: 0;
   }
 
   .board {
-    width: 100%;
+    width: var(--board-px, 100%);
+    max-width: calc(100vw - 36px);
     min-width: 0;
     gap: 2px;
   }
 
-  .side-panel,
-  .controls-section {
+  .side-panel {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .panel-section {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .status-section {
+    order: 1;
+  }
+
+  .controls-section {
+    order: 2;
+    grid-template-columns: 1fr;
+  }
+
+  .level-section {
+    order: 3;
+  }
+
+  .status-section p {
+    line-height: 1.45;
+  }
+
+  .dpad {
+    display: none;
+  }
+
+  .actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .actions button {
+    min-height: 44px;
+    padding-inline: 4px;
   }
 
   .level-picker {

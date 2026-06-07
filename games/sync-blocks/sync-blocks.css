@@ -250,7 +250,7 @@ h2 {
   position: relative;
   border: 0 solid rgba(24, 32, 38, 0.72);
   background: var(--piece-color);
-  box-shadow: none;
+  box-shadow: 0 0 0 1px var(--piece-color);
 }
 
 

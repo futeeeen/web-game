@@ -1,5 +1,12 @@
 # 專案推送變更紀錄
 
+## 2026.06.07_23:07:24
+* 調整 `games/color-slide/` 手機版配置，參考 `sync-blocks` 的棋盤優先排版，讓狀態與復原/重置/提示/下一關按鈕緊接棋盤。
+* 手機版 `color-slide` 隱藏方向鍵，改以棋盤滑動操作；桌機仍保留鍵盤與方向鍵按鈕。
+* 更新 `color-slide` 棋盤尺寸計算，支援 visual viewport，避免手機 Safari 位址列變化造成橫向溢出。
+* 延續 `sync-blocks` 修正：用同色外擴補掉多格方塊子像素白線，完成後立即啟用下一關。
+* Validation: ran `node --check games\color-slide\slide.js` and `node --check games\sync-blocks\sync-blocks.js`; verified all 8 `color-slide` levels solvable; verified all 24 `sync-blocks` levels solvable with declared solutions; verified `color-slide` mobile layout and swipe interaction in browser.
+
 ## 2026.06.07_17:01:53
 * 新增 `games/color-slide/` 同色滑塊益智遊戲，支援方向鍵/WASD 與螢幕方向鍵同步移動彩色磚塊。
 * 首頁新增「同色滑塊」遊戲卡片與對應縮圖樣式，讓新遊戲可從遊戲列表進入。

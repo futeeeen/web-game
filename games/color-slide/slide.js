@@ -150,6 +150,7 @@ let blocks = [];
 let moves = 0;
 let history = [];
 let progress = loadProgress();
+let touchStart = null;
 
 function keyOf(x, y) {
   return `${x},${y}`;
@@ -256,7 +257,11 @@ function updateBoardSize() {
   const shellStyle = getComputedStyle(shell);
   const shellPadding = parseFloat(shellStyle.paddingLeft) + parseFloat(shellStyle.paddingRight);
   const available = shell.clientWidth - shellPadding;
-  const side = Math.min(available, window.innerHeight * 0.76, 620);
+  const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+  const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+  const mobile = viewportWidth <= 620;
+  const mobileWidth = Math.max(260, viewportWidth - 36);
+  const side = Math.min(available, viewportHeight * (mobile ? 0.58 : 0.76), mobile ? mobileWidth : 620);
   boardEl.style.setProperty("--board-px", `${Math.floor(side)}px`);
 }
 
@@ -418,6 +423,24 @@ function handleKey(event) {
   move(dir);
 }
 
+function handlePointerDown(event) {
+  touchStart = { x: event.clientX, y: event.clientY };
+}
+
+function handlePointerUp(event) {
+  if (!touchStart) return;
+  const dx = event.clientX - touchStart.x;
+  const dy = event.clientY - touchStart.y;
+  touchStart = null;
+  if (Math.hypot(dx, dy) < 28) return;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    move(dx > 0 ? "right" : "left");
+  } else {
+    move(dy > 0 ? "down" : "up");
+  }
+}
+
 document.querySelectorAll("[data-dir]").forEach((button) => {
   button.addEventListener("click", () => move(button.dataset.dir));
 });
@@ -428,5 +451,11 @@ hintBtn.addEventListener("click", showHint);
 nextBtn.addEventListener("click", () => loadLevel(levelIndex + 1));
 window.addEventListener("keydown", handleKey);
 window.addEventListener("resize", updateBoardSize);
+window.visualViewport?.addEventListener("resize", updateBoardSize);
+boardEl.addEventListener("pointerdown", handlePointerDown);
+boardEl.addEventListener("pointerup", handlePointerUp);
+boardEl.addEventListener("pointercancel", () => {
+  touchStart = null;
+});
 
 loadLevel(0);
