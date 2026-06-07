@@ -466,6 +466,7 @@ h2 {
 
 .actions button {
   min-height: 42px;
+  touch-action: manipulation;
 }
 
 .actions button:disabled {

@@ -1019,16 +1019,35 @@ function handlePointerUp(event) {
   }
 }
 
+function bindActionButton(button, handler) {
+  let lastTouchRunAt = 0;
+
+  button.addEventListener("pointerup", (event) => {
+    if (event.pointerType === "mouse" || button.disabled) return;
+    event.preventDefault();
+    lastTouchRunAt = Date.now();
+    handler(event);
+  });
+
+  button.addEventListener("click", (event) => {
+    if (Date.now() - lastTouchRunAt < 500) {
+      event.preventDefault();
+      return;
+    }
+    handler(event);
+  });
+}
+
 document.querySelectorAll("[data-dir]").forEach((button) => {
   button.addEventListener("click", () => move(button.dataset.dir));
 });
 
 prevPageBtn.addEventListener("click", () => changePage(-1));
 nextPageBtn.addEventListener("click", () => changePage(1));
-undoBtn.addEventListener("click", undo);
-resetBtn.addEventListener("click", () => loadLevel(levelIndex));
-hintBtn.addEventListener("click", showHint);
-nextBtn.addEventListener("click", goNextLevel);
+bindActionButton(undoBtn, undo);
+bindActionButton(resetBtn, () => loadLevel(levelIndex));
+bindActionButton(hintBtn, showHint);
+bindActionButton(nextBtn, goNextLevel);
 window.addEventListener("keydown", handleKey);
 window.addEventListener("resize", updateBoardSize);
 window.visualViewport?.addEventListener("resize", updateBoardSize);
