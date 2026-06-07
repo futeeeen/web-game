@@ -16,8 +16,8 @@ const palette = [
 ];
 
 const boardEl = document.querySelector("#board");
-const remainingCountEl = document.querySelector("#remainingCount");
-const pieceCountEl = document.querySelector("#pieceCount");
+const filledCountEl = document.querySelector("#filledCount");
+const pieceUsageEl = document.querySelector("#pieceUsage");
 const clueCountEl = document.querySelector("#clueCount");
 const statusEl = document.querySelector("#status");
 const checkBtn = document.querySelector("#checkBtn");
@@ -220,8 +220,8 @@ function render() {
     }
   }
 
-  remainingCountEl.textContent = Math.max(0, pieceLimit - playerRects.size);
-  pieceCountEl.textContent = playerRects.size;
+  filledCountEl.textContent = String(filled);
+  pieceUsageEl.textContent = `${playerRects.size}/${pieceLimit}`;
   clueCountEl.textContent = clues.size;
 }
 
@@ -303,7 +303,7 @@ function nextColor() {
 
 function placeRect(rect) {
   if (playerRects.size >= pieceLimit) {
-    setStatus("可用矩形已用完，請先清除或復原一塊矩形後再框選。", "warn");
+    setStatus(`已使用 ${pieceLimit}/${pieceLimit} 個矩形，請先清除或復原一塊後再框選。`, "warn");
     return;
   }
 
@@ -352,7 +352,7 @@ function beginDrag(event) {
   }
 
   if (playerRects.size >= pieceLimit) {
-    setStatus("可用矩形已用完，請先清除或復原一塊矩形後再框選。", "warn");
+    setStatus(`已使用 ${pieceLimit}/${pieceLimit} 個矩形，請先清除或復原一塊後再框選。`, "warn");
     return;
   }
 
@@ -442,7 +442,7 @@ function clearBoard() {
   playerRects.clear();
   clearBadMarks();
   render();
-  setStatus(`已清除所有玩家框選，可用矩形恢復為 ${pieceLimit} 個。`);
+  setStatus(`已清除所有玩家框選，目前使用 0/${pieceLimit} 個矩形。`);
 }
 
 function newPuzzle() {
@@ -454,7 +454,7 @@ function newPuzzle() {
   nextPlayerId = 1;
   clearBadMarks();
   render();
-  setStatus(`新題目已產生。你最多可以使用 ${pieceLimit} 個矩形。`);
+  setStatus(`新題目已產生。這題最多可以使用 ${pieceLimit} 個矩形。`);
 }
 
 boardEl.addEventListener("pointerdown", beginDrag);
