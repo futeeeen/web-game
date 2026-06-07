@@ -464,25 +464,132 @@ h2 {
 }
 
 @media (max-width: 620px) {
+  body {
+    overflow-x: hidden;
+  }
+
   .app {
-    width: calc(100% - 10px);
-    gap: 10px;
-    padding-inline: 10px;
+    width: 100%;
+    gap: 8px;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
   }
 
   .topbar {
-    gap: 10px;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 10px;
+    padding: 10px;
+  }
+
+  .title-block {
+    gap: 2px;
+  }
+
+  .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 9vw, 2.15rem);
+  }
+
+  .stats {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .stats span {
+    justify-content: center;
+    min-height: 34px;
+    padding: 6px;
+    font-size: 0.84rem;
+  }
+
+  .play-area {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .board-wrap {
+    width: 100%;
+    overflow: hidden;
+    padding-block: 4px;
+  }
+
+  .board {
+    max-width: calc(100vw - 36px);
+    border-width: 3px;
   }
 
   .control-panel {
     grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
-  .play-area {
+  .panel-section {
+    gap: 8px;
     padding: 10px;
+  }
+
+  .control-panel .panel-section:nth-child(2) {
+    order: 1;
+    grid-template-columns: minmax(92px, 0.36fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .control-panel .controls {
+    order: 2;
+  }
+
+  .control-panel .panel-section:nth-child(1) {
+    order: 3;
+  }
+
+  .control-panel .panel-section:nth-child(3) {
+    order: 4;
+  }
+
+  .meter-row {
+    min-height: 40px;
+  }
+
+  .status {
+    min-height: 0;
+    font-size: 0.94rem;
+    line-height: 1.45;
+  }
+
+  .dpad {
+    display: none;
+  }
+
+  .actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .actions button {
+    min-height: 44px;
+    padding-inline: 4px;
+  }
+
+  .pager {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+  }
+
+  .level-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
   }
 
   .home-link {
     width: fit-content;
+    min-height: 38px;
+    padding-inline: 12px;
   }
 }

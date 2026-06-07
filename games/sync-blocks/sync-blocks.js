@@ -306,20 +306,6 @@ const LEVELS = [
     ],
   },
   {
-    name: "多色 5：信心轉折",
-    phase: "多色教學",
-    note: "先往左再往下，感受多色題也能逐步拆解。",
-    cols: 7,
-    rows: 6,
-    colorMode: "multi",
-    walls: ["2,1", "4,3"],
-    solutionMoves: ["left", "down"],
-    pieces: [
-      { id: "A", cells: [[3, 1]] },
-      { id: "B", cells: [[5, 3], [5, 4]] },
-    ],
-  },
-  {
     name: "多色 6：分流基礎",
     phase: "多色發展",
     note: "開始需要安排不同顏色停進各自位置。",
@@ -331,6 +317,21 @@ const LEVELS = [
     pieces: [
       { id: "A", cells: [[1, 1], [2, 1]] },
       { id: "B", cells: [[5, 2]] },
+    ],
+  },
+  {
+    name: "多色 9：單色迷宮變奏",
+    phase: "多色精通",
+    note: "與第 16 題相同的迷宮架構，但每塊磚有自己的顏色，不能再用單色互換思路解題。",
+    cols: 9,
+    rows: 6,
+    colorMode: "multi",
+    walls: ["2,0", "2,1", "2,3", "2,4", "5,2", "6,2", "7,2", "5,4"],
+    solutionMoves: ["down", "right", "up", "right", "down"],
+    pieces: [
+      { id: "A", cells: [[4, 1]] },
+      { id: "B", cells: [[6, 4]] },
+      { id: "C", cells: [[1, 2], [1, 3]] },
     ],
   },
   {
@@ -564,6 +565,20 @@ function slideState(level, state, dirName) {
 }
 
 function isSolvedState(level, state) {
+  if (level.colorMode === "single") {
+    const occupied = level.pieces
+      .flatMap((piece, index) => cellsFor(piece, state[index]))
+      .map((cell) => keyOf(cell.x, cell.y))
+      .sort()
+      .join("|");
+    const targets = level.pieces
+      .flatMap((piece) => piece.targetCells)
+      .map((cell) => keyOf(cell.x, cell.y))
+      .sort()
+      .join("|");
+    return occupied === targets;
+  }
+
   return level.pieces.every((piece, index) => {
     const now = cellsFor(piece, state[index]).map((cell) => keyOf(cell.x, cell.y)).sort().join("|");
     const target = piece.targetCells.map((cell) => keyOf(cell.x, cell.y)).sort().join("|");
@@ -847,10 +862,16 @@ function updateBoardSize() {
 
   const style = getComputedStyle(wrapper);
   const availableWidth = wrapper.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-  const availableHeight = Math.min(window.innerHeight * 0.72, 720);
+  const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+  const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+  const mobile = viewportWidth <= 620;
+  const mobileWidth = Math.max(260, viewportWidth - 36);
+  const availableHeight = Math.min(viewportHeight * (mobile ? 0.58 : 0.72), 720);
   const cellFromWidth = availableWidth / level.cols;
   const cellFromHeight = availableHeight / level.rows;
-  const cell = Math.max(34, Math.floor(Math.min(cellFromWidth, cellFromHeight)));
+  const mobileCellFromWidth = mobileWidth / level.cols;
+  const smallestCell = mobile ? 24 : 34;
+  const cell = Math.max(smallestCell, Math.floor(Math.min(cellFromWidth, cellFromHeight, mobileCellFromWidth)));
   boardEl.style.setProperty("--board-px", `${cell * level.cols}px`);
 }
 
@@ -978,6 +999,7 @@ hintBtn.addEventListener("click", showHint);
 nextBtn.addEventListener("click", () => loadLevel(levelIndex + 1));
 window.addEventListener("keydown", handleKey);
 window.addEventListener("resize", updateBoardSize);
+window.visualViewport?.addEventListener("resize", updateBoardSize);
 boardEl.addEventListener("pointerdown", handlePointerDown);
 boardEl.addEventListener("pointerup", handlePointerUp);
 boardEl.addEventListener("pointercancel", () => {
