@@ -195,3 +195,22 @@ h1 {
     18px 18px,
     100% 100%;
 }
+
+.sync .card-art {
+  background:
+    linear-gradient(90deg, transparent 0 18%, #d95c59 18% 42%, transparent 42% 100%),
+    linear-gradient(90deg, transparent 0 46%, #4f8fbd 46% 70%, transparent 70% 100%),
+    linear-gradient(180deg, transparent 0 18%, #d95c59 18% 42%, transparent 42% 100%),
+    linear-gradient(180deg, transparent 0 52%, #56a66f 52% 76%, transparent 76% 100%),
+    linear-gradient(90deg, rgba(41, 49, 61, 0.14) 1px, transparent 1px),
+    linear-gradient(rgba(41, 49, 61, 0.14) 1px, transparent 1px),
+    linear-gradient(135deg, #fff8ea 0 62%, #8bb9b3 63% 100%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    16px 16px,
+    16px 16px,
+    100% 100%;
+}
