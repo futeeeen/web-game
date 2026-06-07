@@ -1,5 +1,12 @@
 # 專案推送變更紀錄
 
+## 2026.06.07_23:59:20
+* 修正 `sync-blocks` 多格方塊補色線會覆蓋黑色外框的問題，改用避開外框邊界的 seam fill，讓方塊內部不露白且外框不斷線。
+* 修正 `sync-blocks` 完成後「下一關」在手機上需要按兩次的問題，改為單擊時重新檢查完成狀態並直接載入下一題。
+* 優化 `draw-guess` 手機版布局，將遊戲說明移到標題下方、清除畫布移到畫布下方，並讓倒數與開始/重新開始按鈕併排。
+* 新增 `draw-guess` 秒數與猜題次數設定，預設為 15 秒與猜 1 次；顏色控制改成小方格並與筆刷大小並排，減少手機畫面高度。
+* Validation: ran `node --check games\draw-guess\draw.js` and `node --check games\sync-blocks\sync-blocks.js`; verified `draw-guess` mobile layout at 390x844 browser viewport with no horizontal overflow and no console errors.
+
 ## 2026.06.07_23:07:24
 * 調整 `games/color-slide/` 手機版配置，參考 `sync-blocks` 的棋盤優先排版，讓狀態與復原/重置/提示/下一關按鈕緊接棋盤。
 * 手機版 `color-slide` 隱藏方向鍵，改以棋盤滑動操作；桌機仍保留鍵盤與方向鍵按鈕。

@@ -793,7 +793,11 @@ function createPieces() {
       unit.style.gridColumn = String(x + 1);
       unit.style.gridRow = String(y + 1);
 
-
+      for (const side of seamSides(x, y, shapeSet)) {
+        const seam = document.createElement("span");
+        seam.className = `seam-fill ${side}`;
+        unit.append(seam);
+      }
 
       pieceEl.append(unit);
     });
@@ -829,6 +833,15 @@ function edgeClasses(x, y, shapeSet) {
   if (!hasSouth && !hasEast) classes.push("round-br");
 
   return classes.join(" ");
+}
+
+function seamSides(x, y, shapeSet) {
+  return [
+    shapeSet.has(keyOf(x, y - 1)) ? "north" : "",
+    shapeSet.has(keyOf(x, y + 1)) ? "south" : "",
+    shapeSet.has(keyOf(x - 1, y)) ? "west" : "",
+    shapeSet.has(keyOf(x + 1, y)) ? "east" : "",
+  ].filter(Boolean);
 }
 
 function renderPieces(animated = true) {
@@ -952,6 +965,21 @@ function showHint() {
   setStatus(`提示：下一步往${DIRS[nextDir].label}，目前還差 ${solution.path.length} 步。`, "warn");
 }
 
+function goNextLevel() {
+  const level = currentLevel();
+  if (!isSolvedState(level, origins)) {
+    setStatus("完成這一關後才能前往下一關。", "warn");
+    return;
+  }
+
+  const nextIndex = levelIndex + 1;
+  if (nextIndex >= preparedLevels.length) return;
+
+  const nextPage = Math.floor(nextIndex / PAGE_SIZE);
+  if (pageIndex !== nextPage) pageIndex = nextPage;
+  loadLevel(nextIndex);
+}
+
 function handleKey(event) {
   const keyMap = {
     ArrowUp: "up",
@@ -1000,7 +1028,7 @@ nextPageBtn.addEventListener("click", () => changePage(1));
 undoBtn.addEventListener("click", undo);
 resetBtn.addEventListener("click", () => loadLevel(levelIndex));
 hintBtn.addEventListener("click", showHint);
-nextBtn.addEventListener("click", () => loadLevel(levelIndex + 1));
+nextBtn.addEventListener("click", goNextLevel);
 window.addEventListener("keydown", handleKey);
 window.addEventListener("resize", updateBoardSize);
 window.visualViewport?.addEventListener("resize", updateBoardSize);

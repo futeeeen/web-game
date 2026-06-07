@@ -248,11 +248,48 @@ h2 {
 
 .piece-unit {
   position: relative;
+  --outer-north: 0px;
+  --outer-south: 0px;
+  --outer-west: 0px;
+  --outer-east: 0px;
   border: 0 solid rgba(24, 32, 38, 0.72);
   background: var(--piece-color);
-  box-shadow: 0 0 0 1px var(--piece-color);
 }
 
+.seam-fill {
+  position: absolute;
+  z-index: 1;
+  background: var(--piece-color);
+  pointer-events: none;
+}
+
+.seam-fill.north {
+  top: -1px;
+  right: var(--outer-east);
+  left: var(--outer-west);
+  height: 2px;
+}
+
+.seam-fill.south {
+  right: var(--outer-east);
+  bottom: -1px;
+  left: var(--outer-west);
+  height: 2px;
+}
+
+.seam-fill.west {
+  top: var(--outer-north);
+  bottom: var(--outer-south);
+  left: -1px;
+  width: 2px;
+}
+
+.seam-fill.east {
+  top: var(--outer-north);
+  right: -1px;
+  bottom: var(--outer-south);
+  width: 2px;
+}
 
 .piece-unit.done {
   filter: brightness(1.05);
@@ -260,18 +297,22 @@ h2 {
 
 .piece-unit.north {
   border-top-width: 3px;
+  --outer-north: 3px;
 }
 
 .piece-unit.south {
   border-bottom-width: 3px;
+  --outer-south: 3px;
 }
 
 .piece-unit.west {
   border-left-width: 3px;
+  --outer-west: 3px;
 }
 
 .piece-unit.east {
   border-right-width: 3px;
+  --outer-east: 3px;
 }
 
 .piece-unit.round-tl {

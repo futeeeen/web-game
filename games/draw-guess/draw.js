@@ -57,6 +57,8 @@ const startBtn = document.getElementById('startBtn');
 const clearBtn = document.getElementById('clearBtn');
 const promptCard = document.querySelector('.prompt-card');
 const themeSelect = document.getElementById('themeSelect');
+const durationSelect = document.getElementById('durationSelect');
+const guessLimitSelect = document.getElementById('guessLimitSelect');
 const phaseMessage = document.getElementById('phaseMessage');
 const guessInput = document.getElementById('guessInput');
 const submitBtn = document.getElementById('submitBtn');
@@ -71,6 +73,8 @@ let currentTheme = 'general';
 let previousPromptByTheme = { general: '', chiikawa: '' };
 let timer = null;
 let timeLeft = 15;
+let guessLimit = 1;
+let guessesMade = 0;
 let canDraw = false;
 let drawing = false;
 let lastPoint = null;
@@ -126,7 +130,9 @@ function pickPrompt() {
 
 function startGame() {
   currentPrompt = pickPrompt();
-  timeLeft = 15;
+  timeLeft = Number(durationSelect.value) || 15;
+  guessLimit = Number(guessLimitSelect.value) || 1;
+  guessesMade = 0;
   canDraw = true;
   drawing = false;
   lastPoint = null;
@@ -188,11 +194,24 @@ function submitGuess() {
   if (isAcceptedAnswer(currentPrompt, guess, currentTheme)) {
     resultText.textContent = `答對了！答案是「${currentPrompt.answer}」。`;
     resultText.classList.add('correct');
+    revealAnswer();
   } else {
+    guessesMade += 1;
+    const remaining = guessLimit - guessesMade;
+    if (remaining > 0) {
+      resultText.textContent = `答錯了，還可以再猜 ${remaining} 次。`;
+      resultText.classList.add('wrong');
+      guessInput.value = '';
+      guessInput.focus();
+      return;
+    }
     resultText.textContent = `答錯了，正確答案是「${currentPrompt.answer}」。`;
     resultText.classList.add('wrong');
+    revealAnswer();
   }
+}
 
+function revealAnswer() {
   promptCard.classList.remove('hidden-answer');
   phaseMessage.classList.add('hidden');
   guessInput.disabled = true;
@@ -239,6 +258,9 @@ function endDraw() {
 startBtn.addEventListener('click', startGame);
 clearBtn.addEventListener('click', resetCanvas);
 submitBtn.addEventListener('click', submitGuess);
+durationSelect.addEventListener('change', () => {
+  if (!canDraw && !currentPrompt) timerText.textContent = Number(durationSelect.value) || 15;
+});
 guessInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') submitGuess();
 });

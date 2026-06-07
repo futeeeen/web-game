@@ -45,7 +45,7 @@ select {
 .topbar {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: end;
+  align-items: start;
   gap: 18px;
 }
 
@@ -77,6 +77,14 @@ h1 {
   line-height: 0.95;
 }
 
+.game-note {
+  max-width: 680px;
+  margin: 8px 0 0;
+  color: #4d5968;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
 .status-panel,
 .play-area,
 .guess-panel {
@@ -88,7 +96,7 @@ h1 {
 
 .status-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px minmax(240px, 340px);
+  grid-template-columns: minmax(150px, 1fr) 130px 130px minmax(270px, 380px);
   gap: 12px;
   align-items: start;
   padding: 14px;
@@ -99,8 +107,16 @@ h1 {
   gap: 10px;
 }
 
+.run-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
 .prompt-card,
 .theme-card,
+.settings-card,
 .timer-card {
   display: grid;
   gap: 4px;
@@ -126,6 +142,18 @@ h1 {
 }
 
 .theme-card select {
+  align-self: end;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffefa;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.settings-card select {
   align-self: end;
   width: 100%;
   min-height: 44px;
@@ -190,7 +218,7 @@ h1 {
 }
 
 input[type="color"] {
-  width: 100%;
+  width: 54px;
   height: 46px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -215,6 +243,11 @@ input[type="range"] {
   border-radius: 8px;
   border: 1px solid var(--line);
   background: #fffefa;
+}
+
+.canvas-stack {
+  display: grid;
+  gap: 10px;
 }
 
 canvas {
@@ -284,12 +317,120 @@ canvas {
     grid-template-columns: 1fr;
   }
 
+  .game-note {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .status-panel {
+    gap: 8px;
+  }
+
+  .theme-card,
+  .settings-card,
+  .timer-card,
+  .prompt-card {
+    min-height: auto;
+  }
+
+  .start-stack {
+    gap: 8px;
+  }
+
+  .play-area {
+    gap: 10px;
+  }
+
+  .canvas-stack {
+    order: 1;
+  }
+
+  .tool-panel {
+    order: 2;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: end;
+    gap: 12px;
+  }
+
+  .tool-panel .tool-group:first-child {
+    align-self: end;
+  }
+
+  .phase-message {
+    order: 3;
+  }
+
   .canvas-wrap,
   canvas {
-    min-height: 360px;
+    min-height: min(62dvh, 520px);
   }
 
   .phase-message {
     grid-column: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .game-shell {
+    gap: 10px;
+    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 11vw, 2.7rem);
+  }
+
+  .status-panel,
+  .play-area,
+  .guess-panel {
+    padding: 10px;
+  }
+
+  .status-panel {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .theme-card,
+  .start-stack {
+    grid-column: 1 / -1;
+  }
+
+  .run-row {
+    grid-template-columns: minmax(0, 1fr) minmax(92px, 0.5fr);
+  }
+
+  .timer-card strong,
+  .prompt-card strong {
+    font-size: 1.45rem;
+  }
+
+  .primary-btn {
+    min-height: 50px;
+    padding-inline: 12px;
+  }
+
+  .tool-group {
+    gap: 6px;
+  }
+
+  .tool-panel .tool-group:first-child label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  input[type="color"] {
+    width: 48px;
+    height: 48px;
+    padding: 2px;
   }
 }
