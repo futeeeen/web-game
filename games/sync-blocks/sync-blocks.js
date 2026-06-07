@@ -24,60 +24,95 @@ const LEVELS = [
     pieces: [{ id: "A", cells: [[0, 1]] }],
   },
   {
-    name: "初學 2：短長條",
+    name: "初學 2：角塊框圈",
     phase: "初學階段",
-    note: "長條也是一整塊，所有格子會連在一起滑動。",
+    note: "四個角塊同時移動，利用牆壁讓它們歸位。",
     cols: 6,
-    rows: 4,
+    rows: 8,
     walls: [],
-    solutionMoves: ["right"],
-    pieces: [{ id: "A", cells: [[0, 2], [1, 2]] }],
-  },
-  {
-    name: "初學 3：直立長條",
-    phase: "初學階段",
-    note: "直立長條往下滑，熟悉不同形狀的邊界。",
-    cols: 6,
-    rows: 5,
-    walls: [],
-    solutionMoves: ["down"],
-    pieces: [{ id: "A", cells: [[4, 0], [4, 1]] }],
-  },
-  {
-    name: "初學 4：L 形一體",
-    phase: "初學階段",
-    note: "L 形是同一塊磚，不能拆開控制。",
-    cols: 7,
-    rows: 5,
-    walls: [],
-    solutionMoves: ["right"],
-    pieces: [{ id: "A", cells: [[0, 2], [0, 3], [1, 3]] }],
-  },
-  {
-    name: "初學 5：兩塊同行",
-    phase: "初學階段",
-    note: "兩塊磚會同時往同一方向滑到底。",
-    cols: 7,
-    rows: 5,
-    walls: [],
-    solutionMoves: ["right"],
     pieces: [
-      { id: "A", cells: [[0, 1]] },
-      { id: "B", cells: [[2, 3]] },
+      { id: "A", cells: [[0, 3], [1, 3], [0, 4]] },
+      { id: "B", cells: [[4, 3], [5, 3], [5, 4]] },
+      { id: "C", cells: [[0, 6], [0, 7], [1, 7]] },
+      { id: "D", cells: [[4, 7], [5, 6], [5, 7]] },
     ],
+    targets: [
+      [[2, 0], [3, 0], [2, 1]],
+      [[4, 0], [5, 0], [5, 1]],
+      [[2, 2], [2, 3], [3, 3]],
+      [[5, 2], [4, 3], [5, 3]],
+    ],
+    solutionMoves: ["up", "right"],
   },
   {
-    name: "初學 6：一步撞牆",
+    name: "初學 3：左右合流",
     phase: "初學階段",
-    note: "牆壁會讓先撞到的磚停下，其他磚繼續滑。",
+    note: "引導兩側的 L 形方塊，在上方會合。",
+    cols: 6,
+    rows: 5,
+    walls: [],
+    pieces: [
+      { id: "A", cells: [[1, 3], [1, 4], [2, 4]] },
+      { id: "B", cells: [[4, 3], [5, 3], [5, 4]] },
+    ],
+    targets: [
+      [[0, 0], [0, 1], [1, 1]],
+      [[1, 0], [2, 0], [2, 1]],
+    ],
+    solutionMoves: ["up", "left"],
+  },
+  {
+    name: "初學 4：分流與上升",
+    phase: "初學階段",
+    note: "將大方塊和兩個小方塊一起滑到右邊再往上。",
     cols: 8,
-    rows: 6,
-    walls: ["3,1", "3,2", "6,4"],
-    solutionMoves: ["right"],
+    rows: 5,
+    walls: ["0,0", "1,0", "2,0", "3,0"],
     pieces: [
-      { id: "A", cells: [[0, 2]] },
-      { id: "B", cells: [[4, 3], [4, 4], [5, 4]] },
+      { id: "A", cells: [[0, 1], [1, 1], [2, 1], [3, 1], [1, 2]] },
+      { id: "B", cells: [[0, 4]] },
+      { id: "C", cells: [[1, 4]] },
     ],
+    targets: [
+      [[4, 0], [5, 0], [6, 0], [7, 0], [5, 1]],
+      [[6, 1]],
+      [[7, 1]],
+    ],
+    solutionMoves: ["right", "up"],
+  },
+  {
+    name: "初學 5：高低階梯",
+    phase: "初學階段",
+    note: "利用左上角的障礙物調整相對位置。",
+    cols: 7,
+    rows: 6,
+    walls: ["1,0", "2,0", "1,1", "2,1"],
+    pieces: [
+      { id: "A", cells: [[1, 4], [1, 5], [2, 5]] },
+      { id: "B", cells: [[5, 4], [6, 4], [6, 5]] },
+    ],
+    targets: [
+      [[5, 2], [5, 3], [6, 3]],
+      [[5, 0], [6, 0], [6, 1]],
+    ],
+    solutionMoves: ["up", "right"],
+  },
+  {
+    name: "初學 6：L型步道",
+    phase: "初學階段",
+    note: "避開重重障礙，將兩個小方塊送進右邊的通道。",
+    cols: 6,
+    rows: 6,
+    walls: ["0,0", "0,1", "3,3", "4,3", "5,3", "3,4", "4,4", "5,4", "3,5", "4,5", "5,5"],
+    pieces: [
+      { id: "A", cells: [[0, 5]] },
+      { id: "B", cells: [[2, 5]] },
+    ],
+    targets: [
+      [[5, 2]],
+      [[5, 1]],
+    ],
+    solutionMoves: ["up", "right", "down"],
   },
   {
     name: "初學 7：先上再右",
@@ -742,6 +777,9 @@ function createPieces() {
       unit.className = edgeClasses(x, y, shapeSet);
       unit.style.gridColumn = String(x + 1);
       unit.style.gridRow = String(y + 1);
+
+
+
       pieceEl.append(unit);
     });
 
@@ -758,15 +796,24 @@ function shapeBounds(shape) {
 }
 
 function edgeClasses(x, y, shapeSet) {
-  return [
-    "piece-unit",
-    !shapeSet.has(keyOf(x, y - 1)) ? "north" : "",
-    !shapeSet.has(keyOf(x, y + 1)) ? "south" : "",
-    !shapeSet.has(keyOf(x - 1, y)) ? "west" : "",
-    !shapeSet.has(keyOf(x + 1, y)) ? "east" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const hasNorth = shapeSet.has(keyOf(x, y - 1));
+  const hasSouth = shapeSet.has(keyOf(x, y + 1));
+  const hasWest = shapeSet.has(keyOf(x - 1, y));
+  const hasEast = shapeSet.has(keyOf(x + 1, y));
+
+  const classes = ["piece-unit"];
+  if (!hasNorth) classes.push("north");
+  if (!hasSouth) classes.push("south");
+  if (!hasWest) classes.push("west");
+  if (!hasEast) classes.push("east");
+
+  // Round outer corners:
+  if (!hasNorth && !hasWest) classes.push("round-tl");
+  if (!hasNorth && !hasEast) classes.push("round-tr");
+  if (!hasSouth && !hasWest) classes.push("round-bl");
+  if (!hasSouth && !hasEast) classes.push("round-br");
+
+  return classes.join(" ");
 }
 
 function renderPieces(animated = true) {
