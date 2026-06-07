@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4f7f68" />
+    <meta
+      name="description"
+      content="同色滑塊：用方向鍵或螢幕按鈕讓所有彩色磚塊同步移動，完整停進指定顏色區域。"
+    />
+    <title>同色滑塊 | Web Game Collection</title>
+    <link rel="stylesheet" href="./slide.css" />
+  </head>
+  <body>
+    <main class="app" aria-label="同色滑塊益智遊戲">
+      <header class="mast">
+        <a class="home-link" href="../../" aria-label="返回遊戲列表">返回</a>
+        <div class="title-block">
+          <p class="eyebrow">Moving Color Blocks</p>
+          <h1>同色滑塊</h1>
+        </div>
+        <div class="metrics" aria-live="polite">
+          <span><strong id="levelText">1</strong> 關卡</span>
+          <span><strong id="moveText">0</strong> 步數</span>
+          <span><strong id="bestText">--</strong> 最佳</span>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="board-panel">
+          <div id="board" class="board" aria-label="滑塊棋盤" tabindex="0"></div>
+        </div>
+
+        <aside class="side-panel">
+          <section class="panel-section status-section" aria-live="polite">
+            <h2>狀態</h2>
+            <p id="statusText">使用方向鍵或 WASD 移動所有磚塊。</p>
+          </section>
+
+          <section class="panel-section level-section">
+            <h2>關卡</h2>
+            <div id="levelPicker" class="level-picker" aria-label="選擇關卡"></div>
+          </section>
+
+          <section class="panel-section controls-section">
+            <div class="dpad" aria-label="方向控制">
+              <button class="dir-btn up" type="button" data-dir="up" aria-label="向上">▲</button>
+              <button class="dir-btn left" type="button" data-dir="left" aria-label="向左">◀</button>
+              <button class="dir-btn right" type="button" data-dir="right" aria-label="向右">▶</button>
+              <button class="dir-btn down" type="button" data-dir="down" aria-label="向下">▼</button>
+            </div>
+            <div class="actions">
+              <button id="undoBtn" type="button">撤回</button>
+              <button id="resetBtn" type="button">重置</button>
+              <button id="hintBtn" type="button">提示</button>
+              <button id="nextBtn" type="button">下一關</button>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="./slide.js"></script>
+  </body>
+</html>

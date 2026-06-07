@@ -178,3 +178,20 @@ h1 {
     linear-gradient(135deg, transparent 0 45%, rgba(41, 49, 61, 0.85) 46% 50%, transparent 51% 100%),
     linear-gradient(180deg, #fff8ea 0 68%, #f2c45f 69% 100%);
 }
+
+.slide .card-art {
+  background:
+    radial-gradient(circle at 25% 26%, #d9525f 0 12%, transparent 13%),
+    radial-gradient(circle at 72% 28%, #4b86d9 0 12%, transparent 13%),
+    radial-gradient(circle at 28% 73%, #4f9f70 0 12%, transparent 13%),
+    linear-gradient(90deg, rgba(41, 49, 61, 0.14) 1px, transparent 1px),
+    linear-gradient(rgba(41, 49, 61, 0.14) 1px, transparent 1px),
+    linear-gradient(135deg, #fff8ea 0 58%, #8bb9b3 59% 100%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    18px 18px,
+    18px 18px,
+    100% 100%;
+}
