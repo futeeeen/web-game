@@ -1,4 +1,4 @@
-﻿const morePromptNames = [
+﻿const generalPromptNames = [
   // 動物
   '河馬', '犀牛', '斑馬', '袋鼠', '無尾熊', '猴子', '猩猩', '狐狸', '狼', '松鼠',
   '刺蝟', '水獺', '浣熊', '鹿', '駱駝', '羊駝', '綿羊', '山羊', '乳牛', '小豬',
@@ -203,6 +203,9 @@ function startGame() {
   resultText.className = 'result';
   clearBtn.disabled = false;
   startBtn.textContent = '重新開始';
+  themeSelect.disabled = true;
+  durationSelect.disabled = true;
+  guessLimitSelect.disabled = true;
 
   window.clearInterval(timer);
   timer = window.setInterval(() => {
@@ -217,6 +220,9 @@ function startGame() {
 
 function finishDrawingPhase() {
   window.clearInterval(timer);
+  timer = null;
+  timeLeft = 0;
+  timerText.textContent = timeLeft;
   canDraw = false;
   drawing = false;
   promptCard.classList.add('hidden-answer');
@@ -224,6 +230,9 @@ function finishDrawingPhase() {
   guessInput.disabled = false;
   submitBtn.disabled = false;
   clearBtn.disabled = true;
+  themeSelect.disabled = false;
+  durationSelect.disabled = false;
+  guessLimitSelect.disabled = false;
   guessInput.placeholder = '請輸入猜測答案';
   guessInput.focus();
 }

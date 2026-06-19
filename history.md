@@ -1,5 +1,11 @@
 # 專案推送變更紀錄
 
+## 2026.06.19_23:22:46
+* 修正你畫我猜擴充題庫的變數名稱不一致，避免腳本初始化中止，讓秒數設定與開始遊玩按鈕恢復正常；回合進行時鎖定主題、秒數與猜題次數，時間到後恢復設定並啟用猜題操作。
+* 為你畫我猜的 CSS 與 JavaScript 更新唯一版本參數，避免瀏覽器快取舊版資源造成開始按鈕或秒數設定失效。
+* 更新遊戲頁與首頁說明，反映可自訂作畫時間。
+* Validation: ran `node --check games\draw-guess\draw.js` and `git diff --check`; verified a complete timed round, guessing phase, console errors, and desktop/mobile layouts in browser.
+
 ## 2026.06.07_23:59:20
 * 修正 `sync-blocks` 多格方塊補色線會覆蓋黑色外框的問題，改用避開外框邊界的 seam fill，讓方塊內部不露白且外框不斷線。
 * 修正 `sync-blocks` 完成後「下一關」在手機上需要按兩次的問題，改為單擊時重新檢查完成狀態並直接載入下一題。
