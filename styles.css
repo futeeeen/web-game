@@ -204,6 +204,15 @@ h1 {
     linear-gradient(145deg, #78c4bf 0 55%, #16313a 56% 100%);
 }
 
+.chick .card-art {
+  background:
+    radial-gradient(circle at 50% 40%, #24343a 0 3%, transparent 4%),
+    conic-gradient(from 45deg at 68% 48%, transparent 0 25%, #e9823d 0 50%, transparent 0) 0 0/100% 100%,
+    radial-gradient(ellipse at 50% 56%, #f4c842 0 27%, transparent 28%),
+    radial-gradient(circle at 50% 53%, #70a47a 0 52%, transparent 53%),
+    linear-gradient(145deg, #89c8bd 0 58%, #17343a 59% 100%);
+}
+
 .sync .card-art {
   background:
     linear-gradient(90deg, transparent 0 18%, #d95c59 18% 42%, transparent 42% 100%),

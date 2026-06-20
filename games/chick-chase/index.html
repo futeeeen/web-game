@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#89c8bd" />
+    <meta name="description" content="拿起捕蟲網，在 3D 星球上追捕到處亂跑的小雞。" />
+    <title>Chick Chase | 小雞追追</title>
+    <link rel="stylesheet" href="./styles.css?v=20260620-1" />
+  </head>
+  <body>
+    <canvas id="world" aria-label="3D 小雞捕捉遊戲"></canvas>
+
+    <header class="topbar">
+      <a class="back-link" href="../../"><span aria-hidden="true">←</span> WEB GAME</a>
+      <div class="brand"><span class="brand-mark"></span><span>CHICK CHASE</span></div>
+      <div class="telemetry"><span><b id="chick-count">00</b>/<span id="chick-total">10</span> CHICKS</span><span><b id="timer">00:00</b></span></div>
+    </header>
+
+    <main>
+      <section class="intro" id="intro">
+        <p>PLANETARY CHICKEN RESCUE</p>
+        <h1><span>CHICK</span><span>CHASE</span></h1>
+        <p class="intro-copy">小雞們逃遍整顆星球了！帶上捕蟲網，把牠們一隻一隻帶回來。</p>
+        <button class="primary-button" id="start-button" type="button"><span>開始追雞</span><span aria-hidden="true">→</span></button>
+        <div class="controls-hint"><b>WASD / 方向鍵</b> 移動　<b>拖曳</b> 旋轉視角　<b>左鍵 / 空白鍵</b> 揮網</div>
+      </section>
+
+      <section class="hud" id="hud" aria-label="遊戲資訊">
+        <aside class="mission-card">
+          <p>RESCUE MISSION</p>
+          <h2>抓回逃跑小雞</h2>
+          <div class="progress"><span id="progress-bar"></span></div>
+          <small id="mission-copy">星球上還有 10 隻小雞</small>
+        </aside>
+        <div class="compass" aria-label="方向指示"><span>N</span><i></i><small>DRAG TO LOOK</small></div>
+        <button class="catch-button" id="catch-button" type="button" aria-label="揮動捕蟲網"><span>揮網</span><b>CLICK</b></button>
+        <button class="round-button" id="sound-button" type="button" aria-label="切換音效">♪</button>
+      </section>
+
+      <div class="mobile-controls" aria-label="移動控制">
+        <button data-move="north" aria-label="向前">▲</button>
+        <button data-move="west" aria-label="向左">◀</button>
+        <button data-move="south" aria-label="向後">▼</button>
+        <button data-move="east" aria-label="向右">▶</button>
+      </div>
+
+      <output class="catch-toast" id="catch-toast" aria-live="polite"></output>
+
+      <section class="complete" id="complete" hidden>
+        <div class="complete-card">
+          <p>ALL CHICKS RESCUED</p>
+          <h2>小雞全部<br />抓回來了！</h2>
+          <div class="result"><span>完成時間</span><b id="final-time">00:00</b></div>
+          <button class="primary-button" id="restart-button" type="button"><span>再玩一次</span><span aria-hidden="true">↻</span></button>
+        </div>
+      </section>
+    </main>
+
+    <div class="loading" id="loading"><span></span><b>ROUNDING UP CHICKS</b></div>
+    <script type="module" src="./game.js?v=20260620-4"></script>
+  </body>
+</html>
