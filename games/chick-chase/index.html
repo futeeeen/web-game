@@ -33,16 +33,17 @@
           <div class="progress"><span id="progress-bar"></span></div>
           <small id="mission-copy">星球上還有 10 隻小雞</small>
         </aside>
-        <div class="compass" aria-label="方向指示"><span>N</span><i></i><small>DRAG TO LOOK</small></div>
+        <div class="hud-top-right">
+          <button class="round-button" id="sound-button" type="button" aria-label="切換音效">♪</button>
+          <div class="compass" aria-label="方向指示"><span>N</span><i></i><small>DRAG TO LOOK</small></div>
+        </div>
         <button class="catch-button" id="catch-button" type="button" aria-label="揮動捕蟲網"><span>揮網</span><b>CLICK</b></button>
-        <button class="round-button" id="sound-button" type="button" aria-label="切換音效">♪</button>
       </section>
 
-      <div class="mobile-controls" aria-label="移動控制">
-        <button data-move="north" aria-label="向前">▲</button>
-        <button data-move="west" aria-label="向左">◀</button>
-        <button data-move="south" aria-label="向後">▼</button>
-        <button data-move="east" aria-label="向右">▶</button>
+      <div class="mobile-joystick" id="joystick-container">
+        <div class="joystick-base">
+          <div class="joystick-knob"></div>
+        </div>
       </div>
 
       <output class="catch-toast" id="catch-toast" aria-live="polite"></output>

@@ -302,6 +302,11 @@ function resetGame() {
   orientOnSurface(player, startPos, playerForward.clone().negate());
   activeDirections.clear();
   activeCameraDirections.clear();
+  if (typeof joystickInput !== "undefined") {
+    joystickInput.x = 0;
+    joystickInput.y = 0;
+    if (joystickKnob) joystickKnob.style.transform = "translate(0px, 0px)";
+  }
   stridePhase = 0;
   chickens.forEach(resetChicken);
   swingProgress = 1; swingChecked = false; netRig.rotation.set(-.9,0,-.2);
@@ -357,19 +362,77 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) clearActiveControls();
 });
 
-document.querySelectorAll("[data-move]").forEach(button => {
-  button.addEventListener("pointerdown", event => {
+const joystickContainer = document.querySelector("#joystick-container");
+const joystickKnob = document.querySelector(".joystick-knob");
+let joystickActive = false;
+let joystickPointerId = null;
+const joystickCenter = { x: 0, y: 0 };
+const joystickInput = { x: 0, y: 0 };
+
+if (joystickContainer) {
+  const maxDistance = 40;
+
+  const handleStart = event => {
     event.preventDefault();
-    activeDirections.add(button.dataset.move);
-  });
-  const stopMove = event => {
-    event.preventDefault();
-    activeDirections.delete(button.dataset.move);
+    joystickActive = true;
+    joystickPointerId = event.pointerId;
+    joystickContainer.setPointerCapture(event.pointerId);
+    
+    const rect = joystickContainer.getBoundingClientRect();
+    joystickCenter.x = rect.left + rect.width / 2;
+    joystickCenter.y = rect.top + rect.height / 2;
+    
+    handleMove(event);
   };
-  button.addEventListener("pointerup", stopMove);
-  button.addEventListener("pointercancel", stopMove);
-  button.addEventListener("pointerleave", stopMove);
-});
+
+  const handleMove = event => {
+    if (!joystickActive || event.pointerId !== joystickPointerId) return;
+    event.preventDefault();
+    
+    const dx = event.clientX - joystickCenter.x;
+    const dy = event.clientY - joystickCenter.y;
+    const dist = Math.hypot(dx, dy);
+    
+    if (dist === 0) {
+      joystickInput.x = 0;
+      joystickInput.y = 0;
+      joystickKnob.style.transform = "translate(0px, 0px)";
+      return;
+    }
+    
+    const dirX = dx / dist;
+    const dirY = dy / dist;
+    
+    const clampedDist = Math.min(dist, maxDistance);
+    const moveX = dirX * clampedDist;
+    const moveY = dirY * clampedDist;
+    
+    joystickKnob.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    
+    joystickInput.x = moveX / maxDistance;
+    joystickInput.y = moveY / maxDistance;
+  };
+
+  const handleEnd = event => {
+    if (!joystickActive || event.pointerId !== joystickPointerId) return;
+    event.preventDefault();
+    joystickActive = false;
+    joystickPointerId = null;
+    if (joystickContainer.hasPointerCapture(event.pointerId)) {
+      joystickContainer.releasePointerCapture(event.pointerId);
+    }
+    joystickInput.x = 0;
+    joystickInput.y = 0;
+    joystickKnob.style.transform = "translate(0px, 0px)";
+  };
+
+  joystickContainer.addEventListener("pointerdown", handleStart);
+  joystickContainer.addEventListener("pointermove", handleMove);
+  joystickContainer.addEventListener("pointerup", handleEnd);
+  joystickContainer.addEventListener("pointercancel", handleEnd);
+}
+
+window.addEventListener("contextmenu", event => event.preventDefault());
 
 const drag = { active:false, x:0, y:0, moved:false };
 canvas.addEventListener("pointerdown", event => {
@@ -458,6 +521,11 @@ function animate(now) {
     if (activeDirections.has("south")) moveVec.add(camForward.clone().negate());
     if (activeDirections.has("east")) moveVec.add(camRight);
     if (activeDirections.has("west")) moveVec.add(camRight.clone().negate());
+
+    if (typeof joystickInput !== "undefined" && (joystickInput.x !== 0 || joystickInput.y !== 0)) {
+      moveVec.addScaledVector(camForward, -joystickInput.y);
+      moveVec.addScaledVector(camRight, joystickInput.x);
+    }
 
     if (moveVec.lengthSq() > 0) {
       moveVec.normalize();
