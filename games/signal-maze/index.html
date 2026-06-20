@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#78c4bf" />
+    <meta name="description" content="在 3D 星球迷宮上探索，找回散落的星星。" />
+    <title>Signal Maze | 星球迷宮</title>
+    <link rel="stylesheet" href="./styles.css?v=20260620-3" />
+  </head>
+  <body>
+    <canvas id="world" aria-label="3D 星球迷宮遊戲"></canvas>
+
+    <header class="topbar">
+      <a class="back-link" href="../../"><span aria-hidden="true">←</span> WEB GAME</a>
+      <div class="brand"><span class="brand-mark"></span><span>SIGNAL MAZE</span></div>
+      <div class="telemetry"><span><b id="star-count">00</b>/<span id="star-total">18</span> STARS</span><span><b id="timer">00:00</b></span></div>
+    </header>
+
+    <main>
+      <section class="intro" id="intro">
+        <p>PLANETARY EXPLORATION SYSTEM</p>
+        <h1><span>SIGNAL</span><span>MAZE</span></h1>
+        <p class="intro-copy">穿越環繞星球的迷宮，找回所有失聯星光。</p>
+        <button class="primary-button" id="start-button" type="button"><span>開始探索</span><span aria-hidden="true">→</span></button>
+        <div class="controls-hint"><b>方向鍵</b> 移動　<b>WASD / 拖曳</b> 旋轉視角　<b>滾輪</b> 縮放</div>
+      </section>
+
+      <section class="hud" id="hud" aria-label="遊戲資訊">
+        <aside class="mission-card">
+          <p>MISSION 01</p>
+          <h2>找回星光訊號</h2>
+          <div class="progress"><span id="progress-bar"></span></div>
+          <small id="mission-copy">迷宮中還有 18 顆星星</small>
+        </aside>
+        <div class="compass" aria-label="方向指示"><span>N</span><i></i><small>DRAG TO LOOK</small></div>
+        <button class="round-button" id="sound-button" type="button" aria-label="切換音效">♪</button>
+      </section>
+
+      <div class="mobile-controls" aria-label="移動控制">
+        <button data-move="north" aria-label="向前">▲</button>
+        <button data-move="west" aria-label="向左">◀</button>
+        <button data-move="south" aria-label="向後">▼</button>
+        <button data-move="east" aria-label="向右">▶</button>
+      </div>
+
+      <section class="complete" id="complete" hidden>
+        <div class="complete-card">
+          <p>TRANSMISSION RESTORED</p>
+          <h2>星球再次<br />閃耀了！</h2>
+          <div class="result"><span>完成時間</span><b id="final-time">00:00</b></div>
+          <button class="primary-button" id="restart-button" type="button"><span>再次探索</span><span aria-hidden="true">↻</span></button>
+        </div>
+      </section>
+    </main>
+
+    <div class="loading" id="loading"><span></span><b>ASSEMBLING PLANET</b></div>
+    <script type="module" src="./game.js?v=20260620-3"></script>
+  </body>
+</html>

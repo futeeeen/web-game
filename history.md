@@ -1,5 +1,12 @@
 # 專案推送變更紀錄
 
+## 2026.06.20_22:10:58
+* 新增 `games/signal-maze/` 3D 星球迷宮遊戲，包含低多邊形球面迷宮、角色行走與牆壁判定、18 顆星星蒐集、計時、完成流程及桌機/手機操作介面。
+* 固定採用 Camera-relative 角色移動：方向鍵控制角色並映射到目前畫面最接近的球面網格；WASD 與滑鼠拖曳旋轉視角，可同時移動與調整鏡頭。
+* 修正撞牆朝向、視窗失焦卡鍵與舊版 JavaScript 快取造成載入畫面無法結束的問題，並移除星球表面的黃褐色格子地磚。
+* 在遊戲合集首頁新增 Signal Maze 卡片與縮圖樣式，部署後可由首頁或 `games/signal-maze/` 直接進入。
+* Validation: ran `node --check games\signal-maze\game.js` and `git diff --check`; verified versioned CSS/JavaScript assets and successful loading state in browser.
+
 ## 2026.06.19_23:22:46
 * 修正你畫我猜擴充題庫的變數名稱不一致，避免腳本初始化中止，讓秒數設定與開始遊玩按鈕恢復正常；回合進行時鎖定主題、秒數與猜題次數，時間到後恢復設定並啟用猜題操作。
 * 為你畫我猜的 CSS 與 JavaScript 更新唯一版本參數，避免瀏覽器快取舊版資源造成開始按鈕或秒數設定失效。

@@ -196,6 +196,14 @@ h1 {
     100% 100%;
 }
 
+.signal .card-art {
+  background:
+    radial-gradient(circle at 50% 47%, #f2c45f 0 7%, transparent 8%),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 9px, rgba(255, 248, 234, 0.72) 10px 12px),
+    radial-gradient(circle at 50% 50%, #6ea57c 0 53%, transparent 54%),
+    linear-gradient(145deg, #78c4bf 0 55%, #16313a 56% 100%);
+}
+
 .sync .card-art {
   background:
     linear-gradient(90deg, transparent 0 18%, #d95c59 18% 42%, transparent 42% 100%),
