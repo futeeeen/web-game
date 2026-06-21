@@ -1,8 +1,8 @@
 :root { color-scheme:light; --sky:#89c8bd; --ink:#17343a; --paper:#f5f0dc; --yellow:#f4c842; --orange:#e77d4f; --green:#70a47a; --line:rgba(23,52,58,.25); }
 * { box-sizing:border-box; }
-html,body { width:100%; height:100%; margin:0; overflow:hidden; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
-body { color:var(--ink); background:var(--sky); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
-button,a { font:inherit; -webkit-tap-highlight-color:transparent; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
+html,body { width:100%; height:100%; margin:0; overflow:hidden; touch-action:none; overscroll-behavior:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
+body { color:var(--ink); background:var(--sky); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; touch-action:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
+button,a { font:inherit; -webkit-tap-highlight-color:transparent; touch-action:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; }
 #world { position:fixed; inset:0; display:block; width:100%; height:100%; touch-action:none; cursor:grab; }
 #world:active { cursor:grabbing; }
 .topbar { position:fixed; z-index:20; top:0; left:0; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; width:100%; height:4.5rem; padding:0 1.5rem; border-bottom:1px solid rgba(23,52,58,.14); pointer-events:none; }

@@ -433,6 +433,17 @@ if (joystickContainer) {
 }
 
 window.addEventListener("contextmenu", event => event.preventDefault());
+window.addEventListener("dblclick", event => event.preventDefault(), { passive:false });
+document.addEventListener("gesturestart", event => event.preventDefault(), { passive:false });
+document.addEventListener("gesturechange", event => event.preventDefault(), { passive:false });
+document.addEventListener("gestureend", event => event.preventDefault(), { passive:false });
+
+let lastTouchEnd = 0;
+document.addEventListener("touchend", event => {
+  const now = Date.now();
+  if (now - lastTouchEnd < 350) event.preventDefault();
+  lastTouchEnd = now;
+}, { passive:false });
 
 const drag = { active:false, x:0, y:0, moved:false };
 canvas.addEventListener("pointerdown", event => {

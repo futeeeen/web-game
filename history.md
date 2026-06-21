@@ -1,5 +1,11 @@
 # 專案推送變更紀錄
 
+## 2026.06.21_09:02:06
+* 將 Signal Maze 手機版四方向按鈕改為虛擬搖桿，加入死區、主方向切換、按住連續移動、放手回中及失焦／重開狀態清除，並保留迷宮牆壁碰撞判定。
+* 修正 Chick Chase 遊玩中可能因快速連點、HUD 空白區或 iOS gesture 觸發網頁放大的問題；Signal Maze 同步套用相同防護。
+* 兩款遊戲加入 viewport 縮放限制、全頁 `touch-action: none`、overscroll 封鎖、雙擊與 iOS gesture 攔截，以及快速連續 touchend fallback，並更新前端資源版本避免舊快取。
+* Validation: ran `node --check` for both game scripts, `git diff --check`, DOM viewport/joystick contract checks, and complete zoom-protection contract checks for both games.
+
 ## 2026.06.20_22:10:58
 * 新增 `games/signal-maze/` 3D 星球迷宮遊戲，包含低多邊形球面迷宮、角色行走與牆壁判定、18 顆星星蒐集、計時、完成流程及桌機/手機操作介面。
 * 固定採用 Camera-relative 角色移動：方向鍵控制角色並映射到目前畫面最接近的球面網格；WASD 與滑鼠拖曳旋轉視角，可同時移動與調整鏡頭。

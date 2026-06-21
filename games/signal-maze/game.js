@@ -355,6 +355,8 @@ function resetGame() {
   orientOnSurface(player, moveTo, surfaceFrame(moveTo).north);
   facing = "south";
   activeDirections.length = 0;
+  activeCameraDirections.clear();
+  resetJoystick();
   stars.forEach(star => { star.userData.collected = false; star.visible = true; star.scale.setScalar(1); });
   collected = 0; finished = false; startTime = performance.now(); elapsed = 0;
   starCount.textContent = "00"; progressBar.style.width = "0%"; missionCopy.textContent = `迷宮中還有 ${STAR_COUNT} 顆星星`;
@@ -398,6 +400,7 @@ window.addEventListener("keyup", event => {
 function clearActiveControls() {
   activeDirections.length = 0;
   activeCameraDirections.clear();
+  resetJoystick();
 }
 
 window.addEventListener("blur", clearActiveControls);
@@ -405,22 +408,96 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) clearActiveControls();
 });
 
-document.querySelectorAll("[data-move]").forEach(button => {
-  button.addEventListener("pointerdown", event => {
+const joystickContainer = document.querySelector("#joystick-container");
+const joystickKnob = document.querySelector(".joystick-knob");
+let joystickActive = false;
+let joystickPointerId = null;
+let joystickDirection = null;
+const joystickCenter = { x:0, y:0 };
+
+function setJoystickDirection(nextDirection) {
+  if (nextDirection === joystickDirection) return;
+  if (joystickDirection) handleDirectionRelease(joystickDirection);
+  joystickDirection = nextDirection;
+  if (joystickDirection) handleDirectionPress(joystickDirection);
+}
+
+function resetJoystick() {
+  setJoystickDirection(null);
+  joystickActive = false;
+  joystickPointerId = null;
+  if (joystickKnob) joystickKnob.style.transform = "translate(0px, 0px)";
+}
+
+if (joystickContainer) {
+  const maxDistance = 40;
+  const deadZone = .2;
+
+  const handleJoystickMove = event => {
+    if (!joystickActive || event.pointerId !== joystickPointerId) return;
     event.preventDefault();
-    handleDirectionPress(button.dataset.move);
-  });
-  const stopMove = event => {
-    event.preventDefault();
-    handleDirectionRelease(button.dataset.move);
+    const dx = event.clientX - joystickCenter.x;
+    const dy = event.clientY - joystickCenter.y;
+    const distance = Math.hypot(dx,dy);
+    if (!distance) {
+      joystickKnob.style.transform = "translate(0px, 0px)";
+      setJoystickDirection(null);
+      return;
+    }
+    const clampedDistance = Math.min(distance,maxDistance);
+    const unitX = dx / distance;
+    const unitY = dy / distance;
+    joystickKnob.style.transform = `translate(${unitX*clampedDistance}px, ${unitY*clampedDistance}px)`;
+    if (clampedDistance / maxDistance < deadZone) {
+      setJoystickDirection(null);
+    } else if (Math.abs(unitX) > Math.abs(unitY)) {
+      setJoystickDirection(unitX > 0 ? "east" : "west");
+    } else {
+      setJoystickDirection(unitY > 0 ? "south" : "north");
+    }
   };
-  button.addEventListener("pointerup", stopMove);
-  button.addEventListener("pointercancel", stopMove);
-  button.addEventListener("pointerleave", stopMove);
-});
+
+  joystickContainer.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    joystickActive = true;
+    joystickPointerId = event.pointerId;
+    joystickContainer.setPointerCapture(event.pointerId);
+    const rect = joystickContainer.getBoundingClientRect();
+    joystickCenter.x = rect.left + rect.width / 2;
+    joystickCenter.y = rect.top + rect.height / 2;
+    handleJoystickMove(event);
+  });
+  joystickContainer.addEventListener("pointermove", handleJoystickMove);
+  const endJoystick = event => {
+    if (!joystickActive || event.pointerId !== joystickPointerId) return;
+    event.preventDefault();
+    if (joystickContainer.hasPointerCapture(event.pointerId)) joystickContainer.releasePointerCapture(event.pointerId);
+    resetJoystick();
+  };
+  joystickContainer.addEventListener("pointerup", endJoystick);
+  joystickContainer.addEventListener("pointercancel", endJoystick);
+}
+
+window.addEventListener("contextmenu", event => event.preventDefault());
+window.addEventListener("dblclick", event => event.preventDefault(), { passive:false });
+document.addEventListener("gesturestart", event => event.preventDefault(), { passive:false });
+document.addEventListener("gesturechange", event => event.preventDefault(), { passive:false });
+document.addEventListener("gestureend", event => event.preventDefault(), { passive:false });
+
+let lastTouchEnd = 0;
+document.addEventListener("touchend", event => {
+  const now = Date.now();
+  if (now - lastTouchEnd < 350) event.preventDefault();
+  lastTouchEnd = now;
+}, { passive:false });
 
 const drag = { active:false, x:0, y:0, moved:false };
-canvas.addEventListener("pointerdown", event => { drag.active = true; drag.x = event.clientX; drag.y = event.clientY; drag.moved = false; canvas.setPointerCapture(event.pointerId); });
+canvas.addEventListener("pointerdown", event => {
+  if (event.button !== 0) return;
+  event.preventDefault();
+  drag.active = true; drag.x = event.clientX; drag.y = event.clientY; drag.moved = false;
+  canvas.setPointerCapture(event.pointerId);
+});
 canvas.addEventListener("pointermove", event => {
   if (!drag.active) return;
   const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
