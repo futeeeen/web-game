@@ -213,6 +213,15 @@ h1 {
     linear-gradient(145deg, #89c8bd 0 58%, #17343a 59% 100%);
 }
 
+.orbit .card-art {
+  background:
+    radial-gradient(circle at 50% 43%, #f6f0dc 0 3%, transparent 4%),
+    linear-gradient(22deg, transparent 0 46%, #17343a 47% 51%, transparent 52%) 0 0 / 100% 100%,
+    radial-gradient(circle at 50% 54%, #ef7259 0 8%, transparent 9%),
+    radial-gradient(circle at 50% 55%, #77a876 0 46%, transparent 47%),
+    linear-gradient(145deg, #94c9c1 0 62%, #17343a 63% 100%);
+}
+
 .sync .card-art {
   background:
     linear-gradient(90deg, transparent 0 18%, #d95c59 18% 42%, transparent 42% 100%),

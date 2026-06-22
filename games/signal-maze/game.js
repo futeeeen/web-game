@@ -198,6 +198,7 @@ let moveTo = moveFrom.clone();
 let facing = "south";
 const activeDirections = [];
 const activeCameraDirections = new Set();
+const orbitNorth = surfaceFrame(moveTo).north.clone();
 orientOnSurface(player, moveTo, surfaceFrame(moveTo).north);
 
 const dustGeometry = new THREE.BufferGeometry();
@@ -223,6 +224,14 @@ let cameraDistance = 7.4;
 let targetDistance = 7.4;
 let audioContext;
 let soundEnabled = true;
+
+function stableOrbitFrame(position) {
+  const up = position.clone().normalize();
+  orbitNorth.projectOnPlane(up);
+  if (orbitNorth.lengthSq() < .0001) orbitNorth.copy(surfaceFrame(position).north);
+  orbitNorth.normalize();
+  return { up, north:orbitNorth, east:up.clone().cross(orbitNorth).normalize() };
+}
 
 function formatTime(ms) {
   const seconds = Math.floor(ms / 1000);
@@ -352,6 +361,7 @@ function finishGame() {
 function resetGame() {
   playerCell = { row:0, col:0 }; targetCell = { ...playerCell };
   moveFrom = cellPosition(0,0,RADIUS+.2); moveTo.copy(moveFrom); moveProgress = 1;
+  orbitNorth.copy(surfaceFrame(moveTo).north);
   orientOnSurface(player, moveTo, surfaceFrame(moveTo).north);
   facing = "south";
   activeDirections.length = 0;
@@ -558,7 +568,7 @@ function animate(now) {
   });
 
   cameraDistance += (targetDistance - cameraDistance) * .08;
-  const frame = surfaceFrame(player.position);
+  const frame = stableOrbitFrame(player.position);
   const tangent = frame.north.clone().multiplyScalar(Math.cos(orbitYaw)).add(frame.east.clone().multiplyScalar(Math.sin(orbitYaw)));
   cameraTarget.copy(player.position).add(frame.up.clone().multiplyScalar(.55));
   desiredCamera.copy(cameraTarget)

@@ -1,5 +1,13 @@
 # 專案推送變更紀錄
 
+## 2026.06.22_14:03:49
+* 新增 `games/last-orbit/` 俯視角球面射擊遊戲與首頁入口：角色固定畫面中心，支援桌機 WASD／滑鼠瞄準及手機搖桿／觸控瞄準，並提供根目錄 `start-last-orbit.bat` 一鍵啟動。
+* 將 Last Orbit 改為五波進攻：前四波為有限殭屍攻勢，清場後在玩家周圍半球生成能量球，拾取後暫停世界並從隨機三項能力中選擇升級；暫停時間不計入通關時間。
+* 加入移動速度、射擊頻率、彈速三種數值能力，以及手槍、短距離扇形散彈槍、附帶持續燃燒傷害的火焰槍切換，並降低初始移速、射擊頻率與彈速以建立成長空間。
+* 第五波加入巨龍 Ashmaw 最終 Boss、獨立血條、追擊咬擊、停止移動的鎖向蓄力噴火、錐形持續傷害與勝利結算；玩家可側移躲避並利用噴火空檔輸出。
+* 修正 Last Orbit 星球視覺重心、右手持槍比例與南北極相機翻轉；Chick Chase 與 Signal Maze 的球面軌道相機同步改用連續方向運送，避免跨越極區時視角跳轉。
+* Validation: ran `node --check` for Last Orbit, Chick Chase, and Signal Maze; ran `git diff --check`; passed five-wave/upgrade/weapon/Boss DOM contract checks, complete accelerated five-wave browser flow, dragon bite/fire and victory checks, normal desktop flow, and 390x844 mobile layout checks with no browser errors.
+
 ## 2026.06.21_09:02:06
 * 將 Signal Maze 手機版四方向按鈕改為虛擬搖桿，加入死區、主方向切換、按住連續移動、放手回中及失焦／重開狀態清除，並保留迷宮牆壁碰撞判定。
 * 修正 Chick Chase 遊玩中可能因快速連點、HUD 空白區或 iOS gesture 觸發網頁放大的問題；Signal Maze 同步套用相同防護。

@@ -192,6 +192,7 @@ const startPos = cellPosition(0, 0, RADIUS + .2);
 player.position.copy(startPos);
 const startFrame = surfaceFrame(startPos);
 const playerForward = startFrame.north.clone().negate();
+const orbitNorth = startFrame.north.clone();
 orientOnSurface(player, startPos, playerForward.clone().negate());
 const activeDirections = new Set();
 const activeCameraDirections = new Set();
@@ -223,6 +224,14 @@ let soundEnabled = true;
 let swingProgress = 1;
 let swingChecked = false;
 let toastTimer;
+
+function stableOrbitFrame(position) {
+  const up = position.clone().normalize();
+  orbitNorth.projectOnPlane(up);
+  if (orbitNorth.lengthSq() < .0001) orbitNorth.copy(surfaceFrame(position).north);
+  orbitNorth.normalize();
+  return { up, north:orbitNorth, east:up.clone().cross(orbitNorth).normalize() };
+}
 
 function formatTime(ms) {
   const seconds = Math.floor(ms / 1000);
@@ -299,6 +308,7 @@ function resetGame() {
   player.position.copy(startPos);
   const startFrame = surfaceFrame(startPos);
   playerForward.copy(startFrame.north.clone().negate());
+  orbitNorth.copy(startFrame.north);
   orientOnSurface(player, startPos, playerForward.clone().negate());
   activeDirections.clear();
   activeCameraDirections.clear();
@@ -575,7 +585,7 @@ function animate(now) {
   }
 
   cameraDistance += (targetDistance - cameraDistance) * .08;
-  const frame = surfaceFrame(player.position);
+  const frame = stableOrbitFrame(player.position);
   const tangent = frame.north.clone().multiplyScalar(Math.cos(orbitYaw)).add(frame.east.clone().multiplyScalar(Math.sin(orbitYaw)));
   cameraTarget.copy(player.position).add(frame.up.clone().multiplyScalar(.55));
   desiredCamera.copy(cameraTarget)
